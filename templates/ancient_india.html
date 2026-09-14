@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ancient India - Archaeologist Quest</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#f7ead7,#e8f0df);
+    color:#3d291c;
+}
+
+/* HEADER */
+
+.header{
+    background:linear-gradient(135deg,#632b16,#c65d16);
+    color:white;
+    padding:18px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+}
+
+.header h1{
+    margin:0;
+    font-size:25px;
+}
+
+.back{
+    color:white;
+    text-decoration:none;
+    background:rgba(255,255,255,.2);
+    padding:10px 18px;
+    border-radius:20px;
+}
+
+/* STATS */
+
+.stats{
+    width:94%;
+    max-width:1200px;
+    margin:20px auto;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+}
+
+.stat{
+    background:white;
+    padding:14px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+    font-weight:bold;
+}
+
+.stat span{
+    display:block;
+    margin-top:6px;
+    font-size:18px;
+    color:#71351d;
+}
+
+/* MAIN */
+
+.container{
+    width:94%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.intro{
+    background:white;
+    border-radius:20px;
+    padding:22px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+    margin-bottom:20px;
+}
+
+.intro h2{
+    color:#71351d;
+    margin-top:0;
+}
+
+.progress{
+    height:13px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:12px;
+}
+
+.progress-bar{
+    height:100%;
+    width:20%;
+    background:linear-gradient(90deg,#d2691e,#f0a000);
+    transition:.5s;
+}
+
+/* LEVEL CARDS */
+
+.levels{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.level-card{
+    background:white;
+    border-radius:18px;
+    padding:15px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+    border:3px solid transparent;
+}
+
+.level-card.active{
+    border-color:#d2691e;
+}
+
+.level-card.locked{
+    opacity:.55;
+}
+
+.level-icon{
+    font-size:38px;
+}
+
+.level-card h3{
+    color:#71351d;
+    font-size:16px;
+}
+
+.level-status{
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* GAME AREA */
+
+.game{
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+
+.game-title{
+    text-align:center;
+    color:#71351d;
+    font-size:27px;
+    margin-top:0;
+}
+
+.game-description{
+    text-align:center;
+    color:#6c5545;
+}
+
+/* BUTTON */
+
+.main-btn{
+    border:none;
+    background:#71351d;
+    color:white;
+    padding:14px 28px;
+    border-radius:25px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.main-btn:hover{
+    background:#4e1e0e;
+}
+
+/* =========================
+   LEVEL 1 COLOUR SORT
+========================= */
+
+.challenge{
+    display:none;
+}
+
+.challenge.active{
+    display:block;
+}
+
+.sort-board{
+    background:linear-gradient(#101d3b,#1d315a);
+    border-radius:20px;
+    padding:30px 15px;
+    min-height:430px;
+}
+
+.bottles{
+    display:flex;
+    justify-content:center;
+    align-items:flex-end;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.bottle{
+    width:68px;
+    height:230px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.bottle:hover{
+    transform:translateY(-7px);
+}
+
+.bottle.selected{
+    transform:translateY(-14px);
+    filter:drop-shadow(0 0 12px white);
+}
+
+.neck{
+    width:34px;
+    height:40px;
+    margin:auto;
+    border:3px solid rgba(255,255,255,.8);
+    border-bottom:none;
+    border-radius:10px 10px 0 0;
+}
+
+.body{
+    height:190px;
+    border:3px solid rgba(255,255,255,.85);
+    border-radius:8px 8px 28px 28px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column-reverse;
+    background:rgba(255,255,255,.08);
+}
+
+.layer{
+    width:100%;
+    height:46px;
+}
+
+.red{
+    background:#ef5350;
+}
+
+.yellow{
+    background:#ffd42a;
+}
+
+.green{
+    background:#55c94f;
+}
+
+.blue{
+    background:#29b6e8;
+}
+
+/* COMMON MESSAGE */
+
+.message{
+    min-height:40px;
+    text-align:center;
+    font-weight:bold;
+    margin:15px;
+    font-size:17px;
+}
+
+.success{
+    color:#168516;
+}
+
+.error{
+    color:#c62828;
+}
+
+/* =========================
+   LEVEL 2 POTTERY
+========================= */
+
+.pottery-area{
+    text-align:center;
+}
+
+.pottery-pieces{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin:30px 0;
+}
+
+.piece{
+    width:120px;
+    height:120px;
+    background:linear-gradient(135deg,#c47b45,#7d3f20);
+    border:5px solid #542713;
+    border-radius:45% 55% 50% 40%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:30px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.piece:hover{
+    transform:scale(1.05);
+}
+
+.piece.selected{
+    outline:5px solid #e9a23b;
+    transform:scale(1.08);
+}
+
+.pottery-slots{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:20px 0;
+}
+
+.slot{
+    width:100px;
+    height:90px;
+    border:3px dashed #9b6a45;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    background:#fff7e8;
+}
+
+/* =========================
+   LEVEL 3 SYMBOL
+========================= */
+
+.symbol-board{
+    max-width:700px;
+    margin:30px auto;
+    background:#f8edcf;
+    padding:25px;
+    border-radius:20px;
+    border:4px solid #9b6a45;
+    text-align:center;
+}
+
+.symbols{
+    font-size:48px;
+    letter-spacing:15px;
+    margin:25px;
+}
+
+.code-options{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.code-option{
+    padding:15px;
+    border:2px solid #d6c0a4;
+    background:white;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.code-option:hover{
+    border-color:#d2691e;
+}
+
+/* =========================
+   LEVEL 4 EXCAVATION
+========================= */
+
+.excavation{
+    max-width:700px;
+    margin:auto;
+    text-align:center;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    margin:25px auto;
+    max-width:500px;
+}
+
+.soil{
+    height:70px;
+    border:none;
+    border-radius:10px;
+    background:linear-gradient(135deg,#a86635,#d39a5b);
+    font-size:30px;
+    cursor:pointer;
+    box-shadow:inset 0 0 10px rgba(70,30,10,.4);
+}
+
+.soil:hover{
+    transform:scale(1.03);
+}
+
+.soil.dug{
+    background:#ead0a6;
+}
+
+.soil.wrong{
+    animation:shake .3s;
+}
+
+@keyframes shake{
+    0%{transform:translateX(0)}
+    25%{transform:translateX(-6px)}
+    50%{transform:translateX(6px)}
+    75%{transform:translateX(-6px)}
+    100%{transform:translateX(0)}
+}
+
+/* =========================
+   LEVEL 5 HARAPPA
+========================= */
+
+.builder{
+    max-width:850px;
+    margin:auto;
+    text-align:center;
+}
+
+.city{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:7px;
+    margin:25px auto;
+    max-width:600px;
+    background:#d2a16a;
+    padding:12px;
+    border-radius:15px;
+}
+
+.city-cell{
+    height:75px;
+    border-radius:8px;
+    border:2px solid #85552e;
+    background:#f1d29e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.city-cell:hover{
+    background:#ffe7bb;
+}
+
+.city-cell.selected{
+    background:#e6a34f;
+}
+
+/* QUESTION */
+
+.question-box{
+    margin-top:25px;
+    background:#fff7e8;
+    padding:22px;
+    border-radius:18px;
+    border-left:6px solid #d2691e;
+}
+
+.question-box h3{
+    color:#71351d;
+}
+
+.answer-buttons{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.answer{
+    border:2px solid #ddd;
+    background:white;
+    padding:13px;
+    border-radius:10px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.answer:hover{
+    border-color:#d2691e;
+}
+
+.answer.correct{
+    background:#d8f5d8;
+    border-color:#35a035;
+}
+
+.answer.wrong{
+    background:#ffdcdc;
+    border-color:#d33;
+}
+
+/* COMPLETE */
+
+.complete{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(30,15,5,.88);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.complete-box{
+    background:white;
+    padding:35px;
+    border-radius:25px;
+    text-align:center;
+    max-width:500px;
+    width:95%;
+}
+
+.trophy{
+    font-size:75px;
+}
+
+.reward{
+    font-size:19px;
+    margin:10px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .levels{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .header{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .levels{
+        grid-template-columns:1fr;
+    }
+
+    .answer-buttons{
+        grid-template-columns:1fr;
+    }
+
+    .bottles{
+        gap:12px;
+    }
+
+    .bottle{
+        width:55px;
+        height:200px;
+    }
+
+    .body{
+        height:165px;
+    }
+
+    .layer{
+        height:40px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <h1>🏺 Bharat Quest – Archaeologist Quest</h1>
+
+    <a href="/game" class="back">
+        🗺️ Adventure Map
+    </a>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+        ❤️ Lives
+        <span id="lives">❤️❤️❤️</span>
+    </div>
+
+    <div class="stat">
+        ⭐ XP
+        <span id="xp">0</span>
+    </div>
+
+    <div class="stat">
+        🪙 Coins
+        <span id="coins">0</span>
+    </div>
+
+    <div class="stat">
+        🏺 Artifacts
+        <span id="artifacts">0</span>
+    </div>
+
+    <div class="stat">
+        ⏱️ Time
+        <span id="timer">120</span>
+    </div>
+
+</div>
+
+
+<div class="container">
+
+<!-- INTRO -->
+
+<div class="intro">
+
+    <h2>
+        🧭 Ancient India – Archaeological Expedition
+    </h2>
+
+    <p>
+        You are now an archaeologist.
+        Explore ancient sites, solve archaeological challenges,
+        discover artifacts and uncover India's history.
+    </p>
+
+    <strong>
+        Expedition Progress
+    </strong>
+
+    <div class="progress">
+        <div
+            class="progress-bar"
+            id="progressBar">
+        </div>
+    </div>
+
+</div>
+
+
+<!-- LEVELS -->
+
+<div class="levels">
+
+    <div class="level-card active" id="card1">
+
+        <div class="level-icon">🧪</div>
+
+        <h3>Level 1</h3>
+
+        <p>Colour Sort</p>
+
+        <div class="level-status">
+            🔓 ACTIVE
+        </div>
+
+    </div>
+
+
+    <div class="level-card locked" id="card2">
+
+        <div class="level-icon">🏺</div>
+
+        <h3>Level 2</h3>
+
+        <p>Broken Pottery</p>
+
+        <div class="level-status">
+            🔒 LOCKED
+        </div>
+
+    </div>
+
+
+    <div class="level-card locked" id="card3">
+
+        <div class="level-icon">🔐</div>
+
+        <h3>Level 3</h3>
+
+        <p>Secret Symbols</p>
+
+        <div class="level-status">
+            🔒 LOCKED
+        </div>
+
+    </div>
+
+
+    <div class="level-card locked" id="card4">
+
+        <div class="level-icon">⛏️</div>
+
+        <h3>Level 4</h3>
+
+        <p>Excavation Grid</p>
+
+        <div class="level-status">
+            🔒 LOCKED
+        </div>
+
+    </div>
+
+
+    <div class="level-card locked" id="card5">
+
+        <div class="level-icon">🧱</div>
+
+        <h3>Level 5</h3>
+
+        <p>Build Harappa</p>
+
+        <div class="level-status">
+            🔒 LOCKED
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- GAME -->
+
+<div class="game">
+
+    <!-- LEVEL 1 -->
+
+    <div class="challenge active" id="level1">
+
+        <h2 class="game-title">
+            🧪 Level 1 – Ancient Colour Chamber
+        </h2>
+
+        <p class="game-description">
+
+            An underground chamber has been discovered.
+            Ancient containers are filled with mixed coloured layers.
+
+            <br>
+
+            Sort the colours correctly to open the chamber.
+
+        </p>
+
+
+        <div class="sort-board">
+
+            <div
+                class="bottles"
+                id="bottles">
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="sortMessage">
+
+            🧠 Select a bottle and pour its top colour
+            into another bottle.
+
+        </div>
+
+        <button
+            class="main-btn"
+            onclick="resetSort()">
+
+            🔄 Restart Puzzle
+
+        </button>
+
+    </div>
+
+
+    <!-- LEVEL 2 -->
+
+    <div class="challenge" id="level2">
+
+        <h2 class="game-title">
+            🏺 Level 2 – Broken Pottery
+        </h2>
+
+        <p class="game-description">
+
+            You discovered broken pottery pieces.
+            Archaeologists must carefully reconstruct artifacts.
+
+            <br>
+
+            Arrange the pieces from <strong>1 → 5</strong>.
+
+        </p>
+
+
+        <div class="pottery-area">
+
+            <div
+                class="pottery-pieces"
+                id="potteryPieces">
+            </div>
+
+
+            <div
+                class="pottery-slots"
+                id="potterySlots">
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="potteryMessage">
+
+            🔎 Select the pottery pieces in the correct order.
+
+        </div>
+
+    </div>
+
+
+    <!-- LEVEL 3 -->
+
+    <div class="challenge" id="level3">
+
+        <h2 class="game-title">
+            🔐 Level 3 – Secret Ancient Symbols
+        </h2>
+
+        <p class="game-description">
+
+            A mysterious seal contains ancient symbols.
+            Study the clues and decode the message.
+
+        </p>
+
+
+        <div class="symbol-board">
+
+            <h3>
+                🪨 Archaeological Seal
+            </h3>
+
+            <div class="symbols">
+                ☀️ 🐘 🌊 🐂
+            </div>
+
+            <p>
+                Clue: The civilization was famous for
+                cities, drainage systems and seals.
+            </p>
+
+            <div
+                class="code-options"
+                id="symbolOptions">
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="symbolMessage">
+        </div>
+
+    </div>
+
+
+    <!-- LEVEL 4 -->
+
+    <div class="challenge" id="level4">
+
+        <h2 class="game-title">
+            ⛏️ Level 4 – Excavation Grid
+        </h2>
+
+        <p class="game-description">
+
+            You have found a buried archaeological site.
+
+            <br>
+
+            Dig carefully and discover the hidden artifact.
+
+            <br>
+
+            ⚠️ Some areas contain ordinary soil.
+
+        </p>
+
+
+        <div class="excavation">
+
+            <div
+                class="grid"
+                id="excavationGrid">
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="excavationMessage">
+
+            ⛏️ Choose a soil block to excavate.
+
+        </div>
+
+    </div>
+
+
+    <!-- LEVEL 5 -->
+
+    <div class="challenge" id="level5">
+
+        <h2 class="game-title">
+            🧱 Level 5 – Rebuild Harappa
+        </h2>
+
+        <p class="game-description">
+
+            You are the chief archaeologist.
+
+            <br>
+
+            Reconstruct the important parts of an ancient city.
+
+            <br>
+
+            Select the correct locations for:
+
+            <strong>🏠 Houses → 💧 Drainage → 🏺 Granary → 🛁 Great Bath</strong>
+
+        </p>
+
+
+        <div class="builder">
+
+            <div
+                class="city"
+                id="city">
+            </div>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="builderMessage">
+
+            🧠 Study the city plan and place the structures correctly.
+
+        </div>
+
+    </div>
+
+
+    <!-- QUESTION -->
+
+    <div
+        class="question-box"
+        id="questionBox"
+        style="display:none;">
+
+        <h3 id="questionText">
+        </h3>
+
+        <div
+            class="answer-buttons"
+            id="answerButtons">
+        </div>
+
+        <div
+            class="message"
+            id="answerMessage">
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- COMPLETE SCREEN -->
+
+<div
+    class="complete"
+    id="completeScreen">
+
+    <div class="complete-box">
+
+        <div class="trophy">
+            🏆
+        </div>
+
+        <h2>
+            Ancient India Expedition Complete!
+        </h2>
+
+        <p>
+            🎉 You have successfully completed
+            all five archaeological missions.
+        </p>
+
+        <div class="reward">
+            ⭐ XP Earned:
+            <strong id="finalXP">0</strong>
+        </div>
+
+        <div class="reward">
+            🪙 Coins Earned:
+            <strong id="finalCoins">0</strong>
+        </div>
+
+        <div class="reward">
+            🏺 Artifacts:
+            <strong id="finalArtifacts">0</strong>
+        </div>
+
+        <br>
+
+        <button
+            class="main-btn"
+            onclick="goMap()">
+
+            🗺️ Return to Adventure Map
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GAME VARIABLES
+===================================================== */
+
+let currentLevel = 1;
+
+let xp = 0;
+
+let coins = 0;
+
+let artifacts = 0;
+
+let lives = 3;
+
+let time = 120;
+
+let timerInterval;
+
+let selectedBottle = null;
+
+let potteryOrder = [];
+
+let potteryNext = 1;
+
+
+/* =====================================================
+   LEVEL 1 COLOUR PUZZLE
+===================================================== */
+
+const originalPuzzle = [
+
+    ["red","yellow","blue","green"],
+
+    ["green","blue","yellow","red"],
+
+    ["blue","green","red","yellow"],
+
+    ["yellow","red","green","blue"],
+
+    [],
+
+    []
+
+];
+
+let puzzle = [];
+
+
+function createPuzzle(){
+
+    puzzle = originalPuzzle.map(
+        bottle => [...bottle]
+    );
+
+}
+
+
+/* DRAW BOTTLES */
+
+function drawBottles(){
+
+    const container =
+        document.getElementById("bottles");
+
+    container.innerHTML = "";
+
+    puzzle.forEach(
+        (bottle,index)=>{
+
+            const bottleDiv =
+                document.createElement("div");
+
+            bottleDiv.className="bottle";
+
+            if(selectedBottle===index){
+
+                bottleDiv.classList.add("selected");
+
+            }
+
+            bottleDiv.onclick=()=>{
+                selectBottle(index);
+            };
+
+
+            const neck =
+                document.createElement("div");
+
+            neck.className="neck";
+
+
+            const body =
+                document.createElement("div");
+
+            body.className="body";
+
+
+            bottle.forEach(
+                colour=>{
+
+                    const layer =
+                        document.createElement("div");
+
+                    layer.className=
+                        "layer "+colour;
+
+                    body.appendChild(layer);
+
+                }
+            );
+
+
+            bottleDiv.appendChild(neck);
+
+            bottleDiv.appendChild(body);
+
+            container.appendChild(bottleDiv);
+
+        }
+    );
+
+}
+
+
+/* SELECT BOTTLE */
+
+function selectBottle(index){
+
+    if(selectedBottle===null){
+
+        if(puzzle[index].length===0){
+
+            setMessage(
+                "sortMessage",
+                "⚠️ Empty bottle! Select a bottle containing a colour.",
+                false
+            );
+
+            return;
+
+        }
+
+        selectedBottle=index;
+
+        setMessage(
+            "sortMessage",
+            "🧪 Bottle "+(index+1)+" selected. Choose a target bottle.",
+            false
+        );
+
+        drawBottles();
+
+        return;
+    }
+
+
+    if(selectedBottle===index){
+
+        selectedBottle=null;
+
+        drawBottles();
+
+        return;
+
+    }
+
+
+    pourColour(selectedBottle,index);
+
+}
+
+
+/* POUR */
+
+function pourColour(from,to){
+
+    const source=puzzle[from];
+
+    const target=puzzle[to];
+
+    if(source.length===0){
+
+        selectedBottle=null;
+        drawBottles();
+        return;
+
+    }
+
+
+    if(target.length>=4){
+
+        setMessage(
+            "sortMessage",
+            "❌ That bottle is full!",
+            false
+        );
+
+        return;
+
+    }
+
+
+    const moving=
+        source[source.length-1];
+
+
+    if(target.length===0){
+
+        target.push(source.pop());
+
+        selectedBottle=null;
+
+        drawBottles();
+
+        checkSort();
+
+        return;
+
+    }
+
+
+    const targetTop=
+        target[target.length-1];
+
+
+    if(moving!==targetTop){
+
+        setMessage(
+            "sortMessage",
+            "❌ Different colour! You can pour only onto the same colour.",
+            false
+        );
+
+        return;
+
+    }
+
+
+    target.push(source.pop());
+
+    selectedBottle=null;
+
+    drawBottles();
+
+    checkSort();
+
+}
+
+
+/* CHECK SORT */
+
+function checkSort(){
+
+    let solved=true;
+
+    for(const bottle of puzzle){
+
+        if(bottle.length===0){
+            continue;
+        }
+
+        if(bottle.length!==4){
+            solved=false;
+            break;
+        }
+
+        const first=bottle[0];
+
+        if(!bottle.every(
+            colour=>colour===first
+        )){
+
+            solved=false;
+            break;
+
+        }
+
+    }
+
+
+    if(solved){
+
+        setMessage(
+            "sortMessage",
+            "🎉 Excellent! The ancient chamber has opened!",
+            true
+        );
+
+        setTimeout(
+            ()=>{
+                showQuestion(1);
+            },
+            1000
+        );
+
+    }
+
+}
+
+
+/* RESET */
+
+function resetSort(){
+
+    selectedBottle=null;
+
+    createPuzzle();
+
+    drawBottles();
+
+    setMessage(
+        "sortMessage",
+        "🔄 Puzzle restarted. Think carefully!",
+        false
+    );
+
+}
+
+
+/* =====================================================
+   LEVEL 2 POTTERY
+===================================================== */
+
+function createPottery(){
+
+    potteryOrder=[];
+
+    potteryNext=1;
+
+    const pieces=
+        document.getElementById("potteryPieces");
+
+    pieces.innerHTML="";
+
+
+    let numbers=[
+        1,2,3,4,5
+    ];
+
+    numbers.sort(
+        ()=>Math.random()-.5
+    );
+
+
+    numbers.forEach(
+        number=>{
+
+            const piece=
+                document.createElement("div");
+
+            piece.className="piece";
+
+            piece.innerText=
+                "🏺 "+number;
+
+            piece.onclick=
+                ()=>selectPottery(
+                    number,
+                    piece
+                );
+
+            pieces.appendChild(piece);
+
+        }
+    );
+
+
+    const slots=
+        document.getElementById("potterySlots");
+
+    slots.innerHTML="";
+
+
+    for(let i=1;i<=5;i++){
+
+        const slot=
+            document.createElement("div");
+
+        slot.className="slot";
+
+        slot.id="slot"+i;
+
+        slot.innerText="?";
+
+        slots.appendChild(slot);
+
+    }
+
+}
+
+
+/* SELECT POTTERY */
+
+function selectPottery(number,piece){
+
+    if(number!==potteryNext){
+
+        lives--;
+
+        updateStats();
+
+        setMessage(
+            "potteryMessage",
+            "❌ Wrong piece! Archaeologists must observe carefully.",
+            false
+        );
+
+        piece.classList.add("selected");
+
+        setTimeout(
+            ()=>{
+                piece.classList.remove("selected");
+            },
+            500
+        );
+
+        return;
+
+    }
+
+
+    potteryOrder.push(number);
+
+    document.getElementById(
+        "slot"+number
+    ).innerText=
+        "🏺 "+number;
+
+    piece.style.visibility="hidden";
+
+    potteryNext++;
+
+
+    if(potteryNext===6){
+
+        xp+=30;
+        coins+=20;
+        artifacts++;
+
+        updateStats();
+
+        setMessage(
+            "potteryMessage",
+            "🎉 Pottery artifact reconstructed!",
+            true
+        );
+
+        setTimeout(
+            ()=>{
+                showQuestion(2);
+            },
+            1000
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LEVEL 3 SYMBOL DECODE
+===================================================== */
+
+function createSymbols(){
+
+    const options=
+        document.getElementById("symbolOptions");
+
+    options.innerHTML="";
+
+
+    const answers=[
+        "Indus Valley Civilization",
+        "Mauryan Empire",
+        "Gupta Empire",
+        "Chola Empire"
+    ];
+
+
+    answers.forEach(
+        answer=>{
+
+            const button=
+                document.createElement("button");
+
+            button.className="code-option";
+
+            button.innerText=answer;
+
+            button.onclick=
+                ()=>checkSymbol(answer);
+
+            options.appendChild(button);
+
+        }
+    );
+
+}
+
+
+function checkSymbol(answer){
+
+    if(answer==="Indus Valley Civilization"){
+
+        xp+=30;
+        coins+=20;
+        artifacts++;
+
+        updateStats();
+
+        setMessage(
+            "symbolMessage",
+            "🎉 Correct! The seal belongs to the Indus Valley Civilization.",
+            true
+        );
+
+        setTimeout(
+            ()=>{
+                showQuestion(3);
+            },
+            1000
+        );
+
+    }
+    else{
+
+        lives--;
+
+        updateStats();
+
+        setMessage(
+            "symbolMessage",
+            "❌ Incorrect. Study the archaeological clues again.",
+            false
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LEVEL 4 EXCAVATION GRID
+===================================================== */
+
+let artifactPosition;
+
+
+function createExcavation(){
+
+    const grid=
+        document.getElementById(
+            "excavationGrid"
+        );
+
+    grid.innerHTML="";
+
+
+    artifactPosition=
+        Math.floor(
+            Math.random()*25
+        );
+
+
+    for(let i=0;i<25;i++){
+
+        const block=
+            document.createElement("button");
+
+        block.className="soil";
+
+        block.innerText="🟫";
+
+        block.onclick=
+            ()=>dig(block,i);
+
+        grid.appendChild(block);
+
+    }
+
+}
+
+
+function dig(block,index){
+
+    if(block.classList.contains("dug")){
+        return;
+    }
+
+
+    block.classList.add("dug");
+
+
+    if(index===artifactPosition){
+
+        block.innerText="🏺";
+
+        xp+=40;
+        coins+=25;
+        artifacts++;
+
+        updateStats();
+
+        setMessage(
+            "excavationMessage",
+            "🎉 Artifact discovered! Your excavation was successful!",
+            true
+        );
+
+        setTimeout(
+            ()=>{
+                showQuestion(4);
+            },
+            1000
+        );
+
+    }
+    else{
+
+        block.innerText="🪨";
+
+        lives--;
+
+        updateStats();
+
+        setMessage(
+            "excavationMessage",
+            "🪨 Only ordinary soil. Keep investigating!",
+            false
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LEVEL 5 HARAPPA BUILDER
+===================================================== */
+
+let builderStep=0;
+
+const buildingAnswers=[
+    "🏠",
+    "💧",
+    "🏺",
+    "🛁"
+];
+
+
+function createCity(){
+
+    const city=
+        document.getElementById("city");
+
+    city.innerHTML="";
+
+    builderStep=0;
+
+
+    for(let i=0;i<25;i++){
+
+        const cell=
+            document.createElement("div");
+
+        cell.className="city-cell";
+
+        cell.innerText="";
+
+        cell.onclick=
+            ()=>placeBuilding(cell);
+
+        city.appendChild(cell);
+
+    }
+
+}
+
+
+function placeBuilding(cell){
+
+    if(cell.innerText!==""){
+        return;
+    }
+
+
+    const building=
+        buildingAnswers[builderStep];
+
+    cell.innerText=building;
+
+    cell.classList.add("selected");
+
+    builderStep++;
+
+
+    if(builderStep===4){
+
+        xp+=50;
+        coins+=35;
+        artifacts++;
+
+        updateStats();
+
+        setMessage(
+            "builderMessage",
+            "🎉 Ancient city successfully reconstructed!",
+            true
+        );
+
+        setTimeout(
+            ()=>{
+                showQuestion(5);
+            },
+            1000
+        );
+
+    }
+    else{
+
+        setMessage(
+            "builderMessage",
+            "🏗️ Good! Now place the next structure.",
+            false
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   QUESTIONS
+===================================================== */
+
+const questions={
+
+1:{
+    text:
+    "Which civilization is famous for planned cities and advanced drainage systems?",
+
+    answers:[
+        "Indus Valley Civilization",
+        "Roman Civilization",
+        "Mughal Empire",
+        "British Empire"
+    ],
+
+    correct:0
+},
+
+2:{
+    text:
+    "Why is pottery important to archaeologists?",
+
+    answers:[
+        "It gives clues about ancient daily life",
+        "It is always made of gold",
+        "It cannot survive underground",
+        "It was only used for decoration"
+    ],
+
+    correct:0
+},
+
+3:{
+    text:
+    "What are Indus Valley seals commonly associated with?",
+
+    answers:[
+        "Animal figures and symbols",
+        "Modern alphabets",
+        "Printed newspapers",
+        "Modern photographs"
+    ],
+
+    correct:0
+},
+
+4:{
+    text:
+    "Why is careful excavation important?",
+
+    answers:[
+        "It preserves archaeological context",
+        "It makes artifacts newer",
+        "It changes the artifact",
+        "It removes historical information"
+    ],
+
+    correct:0
+},
+
+5:{
+    text:
+    "What does the Great Bath at Mohenjo-daro show?",
+
+    answers:[
+        "Advanced public architecture",
+        "Modern swimming technology",
+        "A railway station",
+        "A modern palace"
+    ],
+
+    correct:0
+}
+
+};
+
+
+let questionLevel=0;
+
+
+function showQuestion(level){
+
+    questionLevel=level;
+
+    const q=questions[level];
+
+    document.getElementById(
+        "questionBox"
+    ).style.display="block";
+
+
+    document.getElementById(
+        "questionText"
+    ).innerText=
+        "🧠 Archaeologist Question: "+q.text;
+
+
+    const buttons=
+        document.getElementById(
+            "answerButtons"
+        );
+
+    buttons.innerHTML="";
+
+
+    q.answers.forEach(
+        (answer,index)=>{
+
+            const button=
+                document.createElement("button");
+
+            button.className="answer";
+
+            button.innerText=
+                String.fromCharCode(65+index)+
+                ". "+answer;
+
+            button.onclick=
+                ()=>answerQuestion(
+                    index,
+                    button
+                );
+
+            buttons.appendChild(button);
+
+        }
+    );
+
+    document.getElementById(
+        "answerMessage"
+    ).innerText="";
+
+}
+
+
+/* ANSWER */
+
+function answerQuestion(index,button){
+
+    const q=questions[questionLevel];
+
+    const buttons=
+        document.querySelectorAll(
+            ".answer"
+        );
+
+
+    buttons.forEach(
+        b=>b.disabled=true
+    );
+
+
+    if(index===q.correct){
+
+        button.classList.add("correct");
+
+        xp+=25;
+        coins+=15;
+
+        updateStats();
+
+        document.getElementById(
+            "answerMessage"
+        ).innerHTML=
+            "🎉 Correct! +25 XP and +15 Coins";
+
+
+        setTimeout(
+            ()=>{
+                completeLevel(questionLevel);
+            },
+            1200
+        );
+
+    }
+    else{
+
+        button.classList.add("wrong");
+
+        lives--;
+
+        updateStats();
+
+        document.getElementById(
+            "answerMessage"
+        ).innerHTML=
+            "❌ Wrong answer. The evidence was telling you something else!";
+
+        setTimeout(
+            ()=>{
+                completeLevel(questionLevel);
+            },
+            1200
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LEVEL COMPLETION
+===================================================== */
+
+function completeLevel(level){
+
+    document.getElementById(
+        "questionBox"
+    ).style.display="none";
+
+
+    if(level<5){
+
+        const next=level+1;
+
+        unlockLevel(next);
+
+        showLevel(next);
+
+    }
+    else{
+
+        finishAncientIndia();
+
+    }
+
+}
+
+
+/* UNLOCK */
+
+function unlockLevel(level){
+
+    const card=
+        document.getElementById(
+            "card"+level
+        );
+
+    card.classList.remove("locked");
+
+    card.classList.add("active");
+
+    card.querySelector(
+        ".level-status"
+    ).innerText=
+        "🔓 UNLOCKED";
+
+}
+
+
+/* SHOW LEVEL */
+
+function showLevel(level){
+
+    currentLevel=level;
+
+    for(let i=1;i<=5;i++){
+
+        document.getElementById(
+            "level"+i
+        ).classList.remove("active");
+
+    }
+
+
+    document.getElementById(
+        "level"+level
+    ).classList.add("active");
+
+
+    for(let i=1;i<=5;i++){
+
+        document.getElementById(
+            "card"+i
+        ).classList.remove("active");
+
+    }
+
+
+    document.getElementById(
+        "card"+level
+    ).classList.add("active");
+
+
+    document.getElementById(
+        "progressBar"
+    ).style.width=
+        (level/5*100)+"%";
+
+
+    if(level===2){
+
+        createPottery();
+
+    }
+
+    if(level===3){
+
+        createSymbols();
+
+    }
+
+    if(level===4){
+
+        createExcavation();
+
+    }
+
+    if(level===5){
+
+        createCity();
+
+    }
+
+
+    startTimer();
+
+}
+
+
+/* =====================================================
+   FINISH
+===================================================== */
+
+function finishAncientIndia(){
+
+    clearInterval(timerInterval);
+
+    xp+=50;
+
+    coins+=50;
+
+    updateStats();
+
+
+    document.getElementById(
+        "finalXP"
+    ).innerText=xp;
+
+
+    document.getElementById(
+        "finalCoins"
+    ).innerText=coins;
+
+
+    document.getElementById(
+        "finalArtifacts"
+    ).innerText=artifacts;
+
+
+    document.getElementById(
+        "completeScreen"
+    ).style.display="flex";
+
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function startTimer(){
+
+    clearInterval(timerInterval);
+
+    time=120;
+
+    document.getElementById(
+        "timer"
+    ).innerText=time;
+
+
+    timerInterval=
+        setInterval(
+            ()=>{
+
+                time--;
+
+                document.getElementById(
+                    "timer"
+                ).innerText=time;
+
+
+                if(time<=0){
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    lives--;
+
+                    updateStats();
+
+                    alert(
+                        "⏰ Time's up! You lost one life. Try the mission again."
+                    );
+
+                    startTimer();
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function setMessage(
+    id,
+    text,
+    success
+){
+
+    const element=
+        document.getElementById(id);
+
+    element.innerText=text;
+
+    element.className="message";
+
+    if(success){
+
+        element.classList.add("success");
+
+    }
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats(){
+
+    document.getElementById(
+        "xp"
+    ).innerText=xp;
+
+
+    document.getElementById(
+        "coins"
+    ).innerText=coins;
+
+
+    document.getElementById(
+        "artifacts"
+    ).innerText=artifacts;
+
+
+    document.getElementById(
+        "lives"
+    ).innerText=
+
+        "❤️".repeat(
+            Math.max(0,lives)
+        )+
+
+        "🖤".repeat(
+            Math.max(0,3-lives)
+        );
+
+}
+
+
+/* =====================================================
+   RETURN MAP
+===================================================== */
+
+function goMap(){
+
+    window.location.href="/game";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+createPuzzle();
+
+drawBottles();
+
+updateStats();
+
+startTimer();
+
+</script>
+
+</body>
+</html>

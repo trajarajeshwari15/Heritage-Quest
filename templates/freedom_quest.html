@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Freedom Quest 🇮🇳</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4ead5;
+    color:#292929;
+}
+
+/* ================= HEADER ================= */
+
+.header{
+    background:linear-gradient(135deg,#ff9933,#fff,#138808);
+    padding:18px;
+    text-align:center;
+    border-bottom:4px solid #333;
+}
+
+.header h1{
+    margin:0;
+    font-size:32px;
+}
+
+.header p{
+    margin:6px 0 0;
+    font-weight:bold;
+}
+
+/* ================= GAME ================= */
+
+.game{
+    max-width:1200px;
+    margin:auto;
+    padding:18px;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat{
+    background:white;
+    border-radius:14px;
+    padding:12px;
+    text-align:center;
+    box-shadow:0 4px 12px #0002;
+    font-weight:bold;
+}
+
+.stat span{
+    display:block;
+    font-size:21px;
+    margin-top:5px;
+}
+
+/* ================= MAP ================= */
+
+.map-container{
+    background:#fff8e8;
+    border:5px solid #8b6b3f;
+    border-radius:20px;
+    padding:15px;
+    box-shadow:0 7px 20px #0003;
+    margin-bottom:20px;
+}
+
+.map-title{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.map{
+    position:relative;
+    height:470px;
+    overflow:hidden;
+    border-radius:15px;
+    background:
+        linear-gradient(145deg,#dff2c4,#b9dd9c);
+    border:3px solid #72552e;
+}
+
+/* map decorations */
+
+.map::before{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    border:35px solid #d1b985;
+    left:50%;
+    top:25px;
+    transform:translateX(-50%);
+    opacity:.35;
+}
+
+.map-label{
+    position:absolute;
+    top:15px;
+    left:20px;
+    background:#fff8;
+    padding:8px 12px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* route */
+
+.route{
+    position:absolute;
+    width:7px;
+    background:#8b5a2b;
+    border-radius:10px;
+    transform-origin:top;
+}
+
+/* locations */
+
+.location{
+    position:absolute;
+    width:105px;
+    text-align:center;
+    z-index:5;
+}
+
+.location-icon{
+    width:58px;
+    height:58px;
+    margin:auto;
+    border-radius:50%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    border:4px solid #777;
+    box-shadow:0 4px 10px #0003;
+}
+
+.location-name{
+    margin-top:5px;
+    background:white;
+    padding:5px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.location.active .location-icon{
+    border-color:#ff9933;
+    transform:scale(1.12);
+}
+
+.location.completed .location-icon{
+    border-color:#138808;
+    background:#e0ffd9;
+}
+
+.location.locked{
+    opacity:.45;
+}
+
+/* locations */
+
+.loc1{
+    left:7%;
+    top:70px;
+}
+
+.loc2{
+    left:27%;
+    top:170px;
+}
+
+.loc3{
+    left:48%;
+    top:75px;
+}
+
+.loc4{
+    left:63%;
+    top:230px;
+}
+
+.loc5{
+    left:76%;
+    top:115px;
+}
+
+.loc6{
+    left:72%;
+    top:330px;
+}
+
+/* player */
+
+.player{
+    position:absolute;
+    z-index:10;
+    font-size:45px;
+    transition:all 1s ease;
+    left:11%;
+    top:125px;
+}
+
+/* map message */
+
+.map-message{
+    text-align:center;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* ================= MISSION ================= */
+
+.mission{
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 5px 15px #0002;
+    margin-bottom:20px;
+}
+
+.mission-title{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.story{
+    margin-top:12px;
+    background:#fff4dc;
+    border-left:6px solid #ff9933;
+    padding:15px;
+    border-radius:10px;
+    line-height:1.6;
+}
+
+/* progress */
+
+.progress-text{
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.progress-bar{
+    height:15px;
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:6px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ff9933,#138808);
+    transition:.5s;
+}
+
+/* ================= CHALLENGE ================= */
+
+.challenge{
+    background:white;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 5px 15px #0002;
+}
+
+.challenge-icon{
+    text-align:center;
+    font-size:60px;
+}
+
+.question{
+    text-align:center;
+    font-size:21px;
+    font-weight:bold;
+    line-height:1.5;
+    margin:15px 0 20px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.option{
+    border:2px solid #ddd;
+    background:#fafafa;
+    padding:16px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.option:hover{
+    transform:translateY(-3px);
+    border-color:#ff9933;
+    background:#fff4e2;
+}
+
+.option.correct{
+    background:#c9f7c4;
+    border-color:#138808;
+}
+
+.option.wrong{
+    background:#ffd2d2;
+    border-color:#d00000;
+}
+
+.message{
+    display:none;
+    padding:15px;
+    margin-top:18px;
+    text-align:center;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.success{
+    background:#d9ffd4;
+    color:#176b13;
+}
+
+.error{
+    background:#ffe0e0;
+    color:#9b0000;
+}
+
+.next-btn{
+    display:none;
+    margin:18px auto 0;
+    padding:13px 28px;
+    border:0;
+    border-radius:12px;
+    background:#138808;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* ================= FINAL ================= */
+
+.final{
+    display:none;
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 7px 25px #0004;
+    margin-top:20px;
+}
+
+.final h1{
+    color:#138808;
+    font-size:38px;
+}
+
+.big-flag{
+    font-size:100px;
+}
+
+.final-box{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px;
+    margin-top:20px;
+}
+
+.final-item{
+    background:#fff0d2;
+    padding:12px 18px;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:700px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .map{
+        height:500px;
+    }
+
+    .location{
+        width:85px;
+    }
+
+    .location-name{
+        font-size:10px;
+    }
+
+    .player{
+        font-size:35px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🇮🇳 Freedom Quest</h1>
+    <p>Become a Freedom Fighter • Travel Through India's Freedom Journey</p>
+</div>
+
+
+<div class="game">
+
+<!-- ================= STATS ================= -->
+
+<div class="stats">
+
+    <div class="stat">
+        ❤️ Lives
+        <span id="lives">❤️❤️❤️</span>
+    </div>
+
+    <div class="stat">
+        ⭐ Freedom XP
+        <span id="xp">0</span>
+    </div>
+
+    <div class="stat">
+        🪙 Coins
+        <span id="coins">0</span>
+    </div>
+
+    <div class="stat">
+        🏆 Missions
+        <span id="missions">0</span>
+    </div>
+
+    <div class="stat">
+        📍 Level
+        <span id="level">1</span>
+    </div>
+
+</div>
+
+
+<!-- ================= ADVENTURE MAP ================= -->
+
+<div class="map-container">
+
+    <div class="map-title">
+        🗺️ Freedom Fighter Adventure Map
+    </div>
+
+    <div class="map">
+
+        <div class="map-label">
+            🇮🇳 Journey Towards Independence
+        </div>
+
+        <!-- ROUTES -->
+
+        <div class="route"
+             style="height:125px;left:15%;top:130px;transform:rotate(40deg);">
+        </div>
+
+        <div class="route"
+             style="height:150px;left:38%;top:150px;transform:rotate(-45deg);">
+        </div>
+
+        <div class="route"
+             style="height:150px;left:56%;top:125px;transform:rotate(55deg);">
+        </div>
+
+        <div class="route"
+             style="height:150px;left:75%;top:180px;transform:rotate(-35deg);">
+        </div>
+
+        <div class="route"
+             style="height:130px;left:78%;top:275px;transform:rotate(10deg);">
+        </div>
+
+
+        <!-- LOCATION 1 -->
+
+        <div class="location loc1 active" id="loc1">
+
+            <div class="location-icon">
+                🏛️
+            </div>
+
+            <div class="location-name">
+                Sabarmati Ashram
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION 2 -->
+
+        <div class="location loc2 locked" id="loc2">
+
+            <div class="location-icon">
+                🕵️
+            </div>
+
+            <div class="location-name">
+                Secret Network
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION 3 -->
+
+        <div class="location loc3 locked" id="loc3">
+
+            <div class="location-icon">
+                📰
+            </div>
+
+            <div class="location-name">
+                Newspaper Office
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION 4 -->
+
+        <div class="location loc4 locked" id="loc4">
+
+            <div class="location-icon">
+                🧂
+            </div>
+
+            <div class="location-name">
+                Dandi
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION 5 -->
+
+        <div class="location loc5 locked" id="loc5">
+
+            <div class="location-icon">
+                🔑
+            </div>
+
+            <div class="location-name">
+                Quit India
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION 6 -->
+
+        <div class="location loc6 locked" id="loc6">
+
+            <div class="location-icon">
+                🏆
+            </div>
+
+            <div class="location-name">
+                Independence
+            </div>
+
+        </div>
+
+
+        <!-- PLAYER -->
+
+        <div class="player" id="player">
+            🧑‍✈️
+        </div>
+
+    </div>
+
+    <div class="map-message" id="mapMessage">
+        📍 You are at Sabarmati Ashram
+    </div>
+
+</div>
+
+
+<!-- ================= MISSION ================= -->
+
+<div class="mission">
+
+    <div class="mission-title" id="missionTitle">
+        📜 Level 1 – Secret Messenger
+    </div>
+
+    <div class="story" id="story">
+
+        You are a young freedom fighter.
+
+        <br><br>
+
+        Important messages are being secretly shared
+        between freedom fighters.
+
+        British officers are watching the roads.
+
+        <br><br>
+
+        Your first mission is to solve the historical clues
+        and safely deliver the secret message.
+
+    </div>
+
+    <div class="progress-text">
+        Mission Progress
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+</div>
+
+
+<!-- ================= CHALLENGE ================= -->
+
+<div class="challenge" id="challenge">
+
+    <div class="challenge-icon" id="challengeIcon">
+        📜
+    </div>
+
+    <div class="question" id="question">
+        Loading...
+    </div>
+
+    <div class="options" id="options"></div>
+
+    <div class="message" id="message"></div>
+
+    <button class="next-btn"
+            id="nextBtn"
+            onclick="nextQuestion()">
+        Next Mission Step ➡️
+    </button>
+
+</div>
+
+
+<!-- ================= FINAL ================= -->
+
+<div class="final" id="final">
+
+    <div class="big-flag">
+        🇮🇳
+    </div>
+
+    <h1>MISSION COMPLETE!</h1>
+
+    <h2>🎉 INDIA IS INDEPENDENT 🎉</h2>
+
+    <p>
+        You completed the Freedom Fighter Adventure.
+    </p>
+
+    <p>
+        From secret missions to the final Independence,
+        you travelled through important stages of India's
+        freedom movement.
+    </p>
+
+    <div class="final-box">
+
+        <div class="final-item">
+            🏛️ Sabarmati Ashram
+        </div>
+
+        <div class="final-item">
+            🕵️ Secret Network
+        </div>
+
+        <div class="final-item">
+            📰 Freedom Newspaper
+        </div>
+
+        <div class="final-item">
+            🧂 Salt March
+        </div>
+
+        <div class="final-item">
+            🔑 Quit India
+        </div>
+
+        <div class="final-item">
+            🇮🇳 Independence
+        </div>
+
+    </div>
+
+    <h2>
+        🏆 Freedom Quest Champion!
+    </h2>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   GAME VARIABLES
+========================================= */
+
+let currentLevel = 0;
+let currentQuestion = 0;
+
+let lives = 3;
+let xp = 0;
+let coins = 0;
+let missions = 0;
+
+let answered = false;
+
+
+/* =========================================
+   LEVEL DATA
+========================================= */
+
+const levels = [
+
+/* ================= LEVEL 1 ================= */
+
+{
+    title:"📜 Level 1 – Secret Messenger",
+
+    icon:"📜",
+
+    location:"📍 You are at Sabarmati Ashram",
+
+    story:
+    "You are a young freedom fighter. Important messages are being secretly shared between freedom fighters. British officers are watching the roads. Solve the historical clues and safely deliver the secret message.",
+
+    questions:[
+
+        {
+            q:"Who led the Salt March in 1930?",
+            a:[
+                "Mahatma Gandhi",
+                "Subhas Chandra Bose",
+                "Bhagat Singh",
+                "Jawaharlal Nehru"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Non-Cooperation Movement was launched in which year?",
+            a:[
+                "1920",
+                "1930",
+                "1942",
+                "1919"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who is popularly known as Netaji?",
+            a:[
+                "Subhas Chandra Bose",
+                "Bal Gangadhar Tilak",
+                "Rajendra Prasad",
+                "Dadabhai Naoroji"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Which movement was launched in 1942?",
+            a:[
+                "Quit India Movement",
+                "Non-Cooperation Movement",
+                "Swadeshi Movement",
+                "Home Rule Movement"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who gave the 'Do or Die' call?",
+            a:[
+                "Mahatma Gandhi",
+                "Bhagat Singh",
+                "Sardar Patel",
+                "Tilak"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Indian National Congress was founded in:",
+            a:[
+                "1885",
+                "1905",
+                "1919",
+                "1942"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was called the 'Frontier Gandhi'?",
+            a:[
+                "Khan Abdul Ghaffar Khan",
+                "Nehru",
+                "Tilak",
+                "Gokhale"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Swadeshi Movement encouraged people to use:",
+            a:[
+                "Indian-made goods",
+                "British goods",
+                "Imported goods",
+                "Luxury goods"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was called the 'Iron Man of India'?",
+            a:[
+                "Sardar Vallabhbhai Patel",
+                "Bhagat Singh",
+                "Rajendra Prasad",
+                "Tilak"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who strongly promoted the idea of Swaraj?",
+            a:[
+                "Bal Gangadhar Tilak",
+                "Lord Curzon",
+                "Lord Mountbatten",
+                "Warren Hastings"
+            ],
+            correct:0
+        }
+
+    ]
+},
+
+
+/* ================= LEVEL 2 ================= */
+
+{
+    title:"🕵️ Level 2 – British Intelligence Escape",
+
+    icon:"🕵️",
+
+    location:"📍 You reached the Secret Freedom Network",
+
+    story:
+    "British intelligence officers are trying to discover the freedom network. Investigate the clues, identify the correct historical information and escape safely.",
+
+    questions:[
+
+        {
+            q:"Who founded a Home Rule League in India?",
+            a:[
+                "Bal Gangadhar Tilak",
+                "Bhagat Singh",
+                "Rajendra Prasad",
+                "Sardar Patel"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Bhagat Singh was associated with:",
+            a:[
+                "Hindustan Socialist Republican Association",
+                "Indian National Army",
+                "Home Rule League",
+                "Muslim League"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Jallianwala Bagh massacre took place in:",
+            a:[
+                "Amritsar",
+                "Delhi",
+                "Mumbai",
+                "Chennai"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Jallianwala Bagh massacre occurred in:",
+            a:[
+                "1919",
+                "1920",
+                "1930",
+                "1942"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was the Viceroy during the Jallianwala Bagh massacre?",
+            a:[
+                "Lord Chelmsford",
+                "Lord Mountbatten",
+                "Lord Curzon",
+                "Lord Wellesley"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was called the 'Grand Old Man of India'?",
+            a:[
+                "Dadabhai Naoroji",
+                "Gandhi",
+                "Nehru",
+                "Tilak"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Swadeshi Movement became important after the:",
+            a:[
+                "Partition of Bengal",
+                "Salt March",
+                "Quit India Movement",
+                "Dandi March"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was the first woman president of the Indian National Congress?",
+            a:[
+                "Annie Besant",
+                "Sarojini Naidu",
+                "Kasturba Gandhi",
+                "Aruna Asaf Ali"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was known as the 'Nightingale of India'?",
+            a:[
+                "Sarojini Naidu",
+                "Annie Besant",
+                "Kasturba Gandhi",
+                "Aruna Asaf Ali"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Champaran Satyagraha was mainly related to:",
+            a:[
+                "Indigo cultivation",
+                "Salt",
+                "Cotton mills",
+                "Forest laws"
+            ],
+            correct:0
+        }
+
+    ]
+},
+
+
+/* ================= LEVEL 3 ================= */
+
+{
+    title:"📰 Level 3 – Freedom Newspaper",
+
+    icon:"📰",
+
+    location:"📍 You reached the Underground Newspaper Office",
+
+    story:
+    "You are now an editor of an underground newspaper. British censorship is strict. Select the correct historical facts and publish the message of freedom.",
+
+    questions:[
+
+        {
+            q:"Which newspaper was associated with Bal Gangadhar Tilak?",
+            a:[
+                "Kesari",
+                "Young India",
+                "Harijan",
+                "The Hindu"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Young India was associated with:",
+            a:[
+                "Mahatma Gandhi",
+                "Subhas Chandra Bose",
+                "Tilak",
+                "Bhagat Singh"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Harijan was associated with:",
+            a:[
+                "Mahatma Gandhi",
+                "Lord Curzon",
+                "Tilak",
+                "Nehru"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who wrote 'Hind Swaraj'?",
+            a:[
+                "Mahatma Gandhi",
+                "Jawaharlal Nehru",
+                "Subhas Chandra Bose",
+                "Rajendra Prasad"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who wrote 'The Discovery of India'?",
+            a:[
+                "Jawaharlal Nehru",
+                "Gandhi",
+                "Tilak",
+                "Bhagat Singh"
+            ],
+            correct:0
+        },
+
+        {
+            q:"'Inquilab Zindabad' is strongly associated with:",
+            a:[
+                "Bhagat Singh",
+                "Rajendra Prasad",
+                "Gokhale",
+                "Dadabhai Naoroji"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who wrote 'Vande Mataram'?",
+            a:[
+                "Bankim Chandra Chattopadhyay",
+                "Rabindranath Tagore",
+                "Sarojini Naidu",
+                "Subramania Bharati"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Subramania Bharati contributed to the freedom movement mainly through:",
+            a:[
+                "Poetry and writings",
+                "Army training",
+                "British administration",
+                "Railway construction"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The press helped the freedom movement by:",
+            a:[
+                "Spreading political awareness",
+                "Supporting colonial rule",
+                "Stopping public discussion",
+                "Promoting British products"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Nationalist newspapers were important because they:",
+            a:[
+                "Connected people with political ideas",
+                "Supported British censorship",
+                "Stopped education",
+                "Promoted colonial taxes"
+            ],
+            correct:0
+        }
+
+    ]
+},
+
+
+/* ================= LEVEL 4 ================= */
+
+{
+    title:"🧂 Level 4 – Salt March Mission",
+
+    icon:"🧂",
+
+    location:"📍 You reached Dandi – Salt March Mission",
+
+    story:
+    "You are now part of the Civil Disobedience Movement. Travel through the Salt March mission, understand the Salt Law and complete the historical challenges.",
+
+    questions:[
+
+        {
+            q:"The Salt March began from:",
+            a:[
+                "Sabarmati Ashram",
+                "Dandi",
+                "Delhi",
+                "Mumbai"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Salt March ended at:",
+            a:[
+                "Dandi",
+                "Chennai",
+                "Amritsar",
+                "Kolkata"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Salt March took place in:",
+            a:[
+                "1930",
+                "1920",
+                "1942",
+                "1919"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Salt March protested against the:",
+            a:[
+                "British Salt Law",
+                "Education policy",
+                "Railway tax",
+                "Land survey"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The movement associated with the Salt March was:",
+            a:[
+                "Civil Disobedience Movement",
+                "Quit India Movement",
+                "Non-Cooperation Movement",
+                "Home Rule Movement"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who broke the Salt Law at Dandi?",
+            a:[
+                "Mahatma Gandhi",
+                "Jawaharlal Nehru",
+                "Subhas Chandra Bose",
+                "Tilak"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Which principle was central to Gandhi's protest methods?",
+            a:[
+                "Non-violence",
+                "Military conquest",
+                "Armed invasion",
+                "Colonial cooperation"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Satyagraha is commonly explained as:",
+            a:[
+                "Truth-force",
+                "Military force",
+                "Economic power",
+                "Political office"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Dandi March challenged British control over:",
+            a:[
+                "Salt",
+                "Railways",
+                "Textiles",
+                "Schools"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Civil Disobedience encouraged people to:",
+            a:[
+                "Peacefully disobey unjust laws",
+                "Support every British law",
+                "Stop education",
+                "Leave India immediately"
+            ],
+            correct:0
+        }
+
+    ]
+},
+
+
+/* ================= LEVEL 5 ================= */
+
+{
+    title:"🔑 Level 5 – Quit India Escape & Rescue",
+
+    icon:"🔑",
+
+    location:"📍 You reached the Quit India Secret Route",
+
+    story:
+    "It is 1942. The Quit India Movement has begun. British officers are arresting leaders. Rescue the freedom network and spread the message of freedom.",
+
+    questions:[
+
+        {
+            q:"The Quit India Movement was launched in:",
+            a:[
+                "1942",
+                "1930",
+                "1920",
+                "1919"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Quit India Movement was launched by the:",
+            a:[
+                "Indian National Congress",
+                "British Parliament",
+                "East India Company",
+                "British Army"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The slogan 'Do or Die' was associated with:",
+            a:[
+                "Quit India Movement",
+                "Swadeshi Movement",
+                "Home Rule Movement",
+                "Champaran Movement"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who hoisted the Congress flag at Gowalia Tank Maidan during the Quit India Movement?",
+            a:[
+                "Aruna Asaf Ali",
+                "Sarojini Naidu",
+                "Annie Besant",
+                "Kasturba Gandhi"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Gowalia Tank Maidan is in:",
+            a:[
+                "Mumbai",
+                "Delhi",
+                "Kolkata",
+                "Chennai"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who led the Indian National Army?",
+            a:[
+                "Subhas Chandra Bose",
+                "Gandhi",
+                "Tilak",
+                "Gokhale"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Subhas Chandra Bose popularised the greeting:",
+            a:[
+                "Jai Hind",
+                "Do or Die",
+                "Swaraj is my birthright",
+                "Simon Go Back"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Indian National Army was also known as:",
+            a:[
+                "Azad Hind Fauj",
+                "Home Army",
+                "Swaraj Army",
+                "Bharat Sena"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The INA operated during:",
+            a:[
+                "World War II",
+                "World War I",
+                "Cold War",
+                "Crimean War"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The main demand of Quit India was:",
+            a:[
+                "End British rule in India",
+                "More British officers",
+                "More British taxes",
+                "More colonial control"
+            ],
+            correct:0
+        }
+
+    ]
+},
+
+
+/* ================= LEVEL 6 ================= */
+
+{
+    title:"🏆 Level 6 – 1947 Final Independence Mission",
+
+    icon:"🏆",
+
+    location:"📍 Final Destination – Independence!",
+
+    story:
+    "The final mission has arrived. India is moving towards independence. Complete the final historical challenges and reach 15 August 1947.",
+
+    questions:[
+
+        {
+            q:"India became independent on:",
+            a:[
+                "15 August 1947",
+                "26 January 1950",
+                "15 August 1942",
+                "26 November 1949"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who became the first Prime Minister of independent India?",
+            a:[
+                "Jawaharlal Nehru",
+                "Sardar Patel",
+                "Rajendra Prasad",
+                "Subhas Chandra Bose"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who was the first Governor-General of independent India?",
+            a:[
+                "Lord Mountbatten",
+                "Lord Curzon",
+                "Lord Wellesley",
+                "Lord Canning"
+            ],
+            correct:0
+        },
+
+        {
+            q:"India became a Republic on:",
+            a:[
+                "26 January 1950",
+                "15 August 1947",
+                "26 November 1949",
+                "2 October 1950"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who became the first President of India?",
+            a:[
+                "Dr. Rajendra Prasad",
+                "Jawaharlal Nehru",
+                "Sardar Patel",
+                "B. R. Ambedkar"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Constitution of India was adopted on:",
+            a:[
+                "26 November 1949",
+                "15 August 1947",
+                "26 January 1950",
+                "2 October 1948"
+            ],
+            correct:0
+        },
+
+        {
+            q:"Who chaired the Drafting Committee of the Constituent Assembly?",
+            a:[
+                "Dr. B. R. Ambedkar",
+                "Mahatma Gandhi",
+                "Nehru",
+                "Sardar Patel"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Indian national flag has how many main colours?",
+            a:[
+                "Three",
+                "Two",
+                "Four",
+                "Five"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The Ashoka Chakra has how many spokes?",
+            a:[
+                "24",
+                "20",
+                "18",
+                "12"
+            ],
+            correct:0
+        },
+
+        {
+            q:"The freedom struggle ultimately resulted in:",
+            a:[
+                "End of British rule",
+                "More colonial rule",
+                "Expansion of British Empire",
+                "End of Indian culture"
+            ],
+            correct:0
+        }
+
+    ]
+}
+
+];
+
+
+/* =========================================
+   SHUFFLE ANSWERS
+========================================= */
+
+function shuffleAnswers(question){
+
+    let answers=[];
+
+    for(let i=0;i<question.a.length;i++){
+
+        answers.push({
+            text:question.a[i],
+            index:i
+        });
+
+    }
+
+    answers.sort(function(){
+        return Math.random()-0.5;
+    });
+
+    return answers;
+}
+
+
+/* =========================================
+   SHOW QUESTION
+========================================= */
+
+function showQuestion(){
+
+    answered=false;
+
+    let level=levels[currentLevel];
+
+    let q=level.questions[currentQuestion];
+
+    document.getElementById("challengeIcon").innerText=
+        level.icon;
+
+    document.getElementById("question").innerText=
+        "Challenge "+
+        (currentQuestion+1)+
+        " / "+
+        level.questions.length+
+        " — "+
+        q.q;
+
+    let options=
+        document.getElementById("options");
+
+    options.innerHTML="";
+
+    let shuffled=shuffleAnswers(q);
+
+    shuffled.forEach(function(item){
+
+        let button=document.createElement("button");
+
+        button.className="option";
+
+        button.innerText=item.text;
+
+        button.onclick=function(){
+
+            checkAnswer(
+                button,
+                item.index
+            );
+
+        };
+
+        options.appendChild(button);
+
+    });
+
+    document.getElementById("message").style.display="none";
+
+    document.getElementById("nextBtn").style.display="none";
+
+    let percentage=
+        (currentQuestion/
+        level.questions.length)*100;
+
+    document.getElementById("progress").style.width=
+        percentage+"%";
+
+}
+
+
+/* =========================================
+   CHECK ANSWER
+========================================= */
+
+function checkAnswer(button,index){
+
+    if(answered) return;
+
+    answered=true;
+
+    let q=
+        levels[currentLevel].questions[currentQuestion];
+
+    let buttons=
+        document.querySelectorAll(".option");
+
+    buttons.forEach(function(btn){
+        btn.disabled=true;
+    });
+
+
+    if(index===q.correct){
+
+        button.classList.add("correct");
+
+        xp+=20;
+        coins+=10;
+        missions++;
+
+        document.getElementById("xp").innerText=xp;
+
+        document.getElementById("coins").innerText=coins;
+
+        document.getElementById("missions").innerText=
+            missions;
+
+        showMessage(
+            "✅ Correct! Historical clue solved! +20 XP +10 Coins",
+            true
+        );
+
+    }
+    else{
+
+        button.classList.add("wrong");
+
+        lives--;
+
+        updateLives();
+
+        showMessage(
+            "❌ Wrong! Correct answer: "+
+            q.a[q.correct],
+            false
+        );
+
+        if(lives<=0){
+
+            setTimeout(function(){
+
+                alert(
+                    "💔 Mission Failed!\n\n"+
+                    "You ran out of lives.\n"+
+                    "This level will restart."
+                );
+
+                lives=3;
+
+                updateLives();
+
+                loadLevel();
+
+            },1000);
+
+            return;
+
+        }
+
+    }
+
+    document.getElementById("nextBtn").style.display=
+        "block";
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text,success){
+
+    let message=
+        document.getElementById("message");
+
+    message.innerText=text;
+
+    message.className=
+        "message "+
+        (success?"success":"error");
+
+    message.style.display="block";
+
+}
+
+
+/* =========================================
+   NEXT QUESTION
+========================================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(
+        currentQuestion>=
+        levels[currentLevel].questions.length
+    ){
+
+        completeLevel();
+
+        return;
+
+    }
+
+    showQuestion();
+
+}
+
+
+/* =========================================
+   COMPLETE LEVEL
+========================================= */
+
+function completeLevel(){
+
+    document.getElementById("progress").style.width=
+        "100%";
+
+    markLocationComplete(currentLevel);
+
+    if(currentLevel<levels.length-1){
+
+        alert(
+            "🎉 Level "+
+            (currentLevel+1)+
+            " Complete!\n\n"+
+            "New location unlocked on the Freedom Map! 🗺️"
+        );
+
+        currentLevel++;
+
+        document.getElementById("level").innerText=
+            currentLevel+1;
+
+        unlockLocation(currentLevel);
+
+        loadLevel();
+
+    }
+    else{
+
+        document.getElementById("challenge").style.display=
+            "none";
+
+        document.getElementById("final").style.display=
+            "block";
+
+        document.getElementById("missionTitle").innerText=
+            "🏆 Freedom Quest Completed";
+
+        document.getElementById("story").innerHTML=
+            "You completed every Freedom Fighter mission and reached India's Independence! 🇮🇳";
+
+        movePlayerTo(6);
+
+    }
+
+}
+
+
+/* =========================================
+   MARK LOCATION COMPLETE
+========================================= */
+
+function markLocationComplete(level){
+
+    let location=
+        document.getElementById("loc"+(level+1));
+
+    location.classList.remove("active");
+
+    location.classList.add("completed");
+
+}
+
+
+/* =========================================
+   UNLOCK LOCATION
+========================================= */
+
+function unlockLocation(level){
+
+    let location=
+        document.getElementById("loc"+(level+1));
+
+    location.classList.remove("locked");
+
+    location.classList.add("active");
+
+    movePlayerTo(level+1);
+
+    document.getElementById("mapMessage").innerText=
+        levels[level].location;
+
+}
+
+
+/* =========================================
+   MOVE PLAYER
+========================================= */
+
+function movePlayerTo(number){
+
+    let player=
+        document.getElementById("player");
+
+    let positions={
+
+        1:{left:"11%",top:"125px"},
+
+        2:{left:"31%",top:"225px"},
+
+        3:{left:"52%",top:"130px"},
+
+        4:{left:"67%",top:"285px"},
+
+        5:{left:"79%",top:"170px"},
+
+        6:{left:"75%",top:"380px"}
+
+    };
+
+    if(positions[number]){
+
+        player.style.left=
+            positions[number].left;
+
+        player.style.top=
+            positions[number].top;
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD LEVEL
+========================================= */
+
+function loadLevel(){
+
+    let level=
+        levels[currentLevel];
+
+    currentQuestion=0;
+
+    document.getElementById("missionTitle").innerText=
+        level.title;
+
+    document.getElementById("story").innerHTML=
+        level.story;
+
+    document.getElementById("challengeIcon").innerText=
+        level.icon;
+
+    document.getElementById("level").innerText=
+        currentLevel+1;
+
+    document.getElementById("mapMessage").innerText=
+        level.location;
+
+    showQuestion();
+
+}
+
+
+/* =========================================
+   LIVES
+========================================= */
+
+function updateLives(){
+
+    let result="";
+
+    for(let i=0;i<3;i++){
+
+        if(i<lives){
+
+            result+="❤️";
+
+        }
+        else{
+
+            result+="🖤";
+
+        }
+
+    }
+
+    document.getElementById("lives").innerText=
+        result;
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+updateLives();
+
+loadLevel();
+
+</script>
+
+</body>
+</html>

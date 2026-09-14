@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Monument Mystery</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#fff7ed,#eff6ff);
+    color:#3b2f2f;
+}
+
+header{
+    background:linear-gradient(135deg,#4b2e1f,#a16207);
+    color:white;
+    padding:18px 30px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.stats{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.stat{
+    background:rgba(255,255,255,.18);
+    padding:9px 15px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.container{
+    width:92%;
+    max-width:1100px;
+    margin:25px auto;
+}
+
+.intro{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+.intro h2{
+    color:#7c3f12;
+}
+
+.progress-box{
+    height:14px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.progress{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#2563eb,#f59e0b);
+    transition:.5s;
+}
+
+.mission{
+    background:white;
+    margin-top:25px;
+    padding:30px;
+    border-radius:22px;
+    box-shadow:0 6px 25px rgba(0,0,0,.13);
+}
+
+.challenge-type{
+    display:inline-block;
+    background:#fef3c7;
+    color:#92400e;
+    padding:9px 15px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.mission-title{
+    color:#713f12;
+    font-size:28px;
+}
+
+.instructions{
+    background:#eff6ff;
+    padding:16px;
+    border-radius:15px;
+    line-height:1.7;
+    font-weight:bold;
+}
+
+
+/* =========================
+   ROTATION PUZZLE
+========================= */
+
+.rotate-board{
+
+    width:480px;
+    height:480px;
+
+    max-width:100%;
+
+    margin:30px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:repeat(3,1fr);
+
+    gap:3px;
+
+    background:#222;
+
+    padding:5px;
+
+    border-radius:15px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+}
+
+.rotate-piece{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border:2px solid white;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    background:#ddd;
+
+    transition:transform .3s;
+}
+
+.rotate-piece img{
+
+    position:absolute;
+
+    width:300%;
+
+    height:300%;
+
+    max-width:none;
+
+    object-fit:cover;
+
+    pointer-events:none;
+}
+
+.rotate-piece.correct{
+
+    border:4px solid #22c55e;
+
+    box-shadow:0 0 12px #22c55e inset;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.game-btn{
+
+    border:none;
+
+    padding:14px 25px;
+
+    border-radius:12px;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-top:15px;
+}
+
+.check-btn{
+    background:#2563eb;
+    color:white;
+}
+
+.next-btn{
+    background:#7c3f12;
+    color:white;
+}
+
+.restart-btn{
+    background:#d97706;
+    color:white;
+}
+
+
+/* =========================
+   FEEDBACK
+========================= */
+
+.feedback{
+
+    display:none;
+
+    margin-top:20px;
+
+    padding:18px;
+
+    border-radius:15px;
+
+    line-height:1.7;
+
+    font-weight:bold;
+}
+
+.feedback.correct{
+
+    display:block;
+
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+.feedback.wrong{
+
+    display:block;
+
+    background:#fee2e2;
+
+    color:#991b1b;
+}
+
+
+/* =========================
+   COLLECTION
+========================= */
+
+.collection{
+
+    background:white;
+
+    margin-top:25px;
+
+    padding:22px;
+
+    border-radius:20px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.1);
+}
+
+.badges{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+}
+
+.badge{
+
+    background:#fef3c7;
+
+    padding:10px 15px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+}
+
+
+/* =========================
+   FINAL SCREEN
+========================= */
+
+.final-screen{
+
+    display:none;
+
+    background:white;
+
+    padding:45px 25px;
+
+    margin-top:25px;
+
+    text-align:center;
+
+    border-radius:25px;
+
+    box-shadow:0 7px 25px rgba(0,0,0,.15);
+}
+
+.final-icons{
+
+    font-size:65px;
+
+    margin:20px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:650px){
+
+    .rotate-board{
+        width:330px;
+        height:330px;
+    }
+
+    header{
+        justify-content:center;
+        text-align:center;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>🏛️ Monument Mystery</h1>
+
+<div class="stats">
+
+<div class="stat">
+❤️ Lives: <span id="lives">3</span>
+</div>
+
+<div class="stat">
+⭐ XP: <span id="xp">0</span>
+</div>
+
+<div class="stat">
+🪙 Coins: <span id="coins">0</span>
+</div>
+
+<div class="stat">
+🧩 Mission: <span id="missionNumber">1</span>/8
+</div>
+
+</div>
+
+</header>
+
+
+<div class="container">
+
+
+<div class="intro">
+
+<h2>🕵️ Heritage Detective Adventure</h2>
+
+<p>
+You are a Heritage Detective!
+</p>
+
+<p>
+Solve the picture puzzle and discover India's famous monuments.
+</p>
+
+<p>
+🧩 Rotate → 🏛️ Reconstruct → 📚 Learn → 🏆 Reward
+</p>
+
+<div class="progress-box">
+
+<div
+class="progress"
+id="progress">
+</div>
+
+</div>
+
+</div>
+
+
+<div id="gameArea"></div>
+
+
+<div class="collection">
+
+<h3>🎒 Heritage Collection</h3>
+
+<div
+class="badges"
+id="badges">
+
+<div class="badge">
+No monuments discovered yet
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="final-screen"
+id="finalScreen">
+
+<div class="final-icons">
+🇮🇳 🏛️ 🕌 🛕 🏰 🧩 🏆
+</div>
+
+<h1>🏆 Grand Heritage Detective!</h1>
+
+<p>
+Excellent! You completed all Monument Mystery missions.
+</p>
+
+<p>
+You reconstructed monuments and learned their history.
+</p>
+
+<h2>
+⭐ Final XP:
+<span id="finalXP">0</span>
+</h2>
+
+<h2>
+🪙 Final Coins:
+<span id="finalCoins">0</span>
+</h2>
+
+<button
+class="game-btn restart-btn"
+onclick="restartGame()">
+
+🔄 Play Again
+
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   MONUMENT MISSIONS
+========================================= */
+
+const missions = [
+
+/* 1 */
+
+{
+title:"🕌 The Four Tower Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Charminar_Hyderabad_India.jpg",
+
+monument:"Charminar",
+
+fact:"The Charminar is a famous monument of Hyderabad built by Muhammad Quli Qutb Shah."
+},
+
+
+/* 2 - TAJ MAHAL */
+
+{
+title:"🤍 The White Marble Mystery",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Taj_Mahal_HD.jpg",
+
+monument:"Taj Mahal",
+
+fact:"The Taj Mahal was commissioned by Mughal emperor Shah Jahan in memory of Mumtaz Mahal."
+},
+
+
+/* 3 */
+
+{
+title:"🌬️ The Palace Window Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Hawa_Mahal_2011.jpg",
+
+monument:"Hawa Mahal",
+
+fact:"Hawa Mahal was built in Jaipur in 1799 by Maharaja Sawai Pratap Singh."
+},
+
+
+/* 4 */
+
+{
+title:"🛕 The Chola Temple Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Brihadeeswarar_Temple%2C_Thanjavur.jpg",
+
+monument:"Brihadeeswarar Temple",
+
+fact:"Brihadeeswarar Temple was built under Rajaraja Chola I at Thanjavur."
+},
+
+
+/* 5 */
+
+{
+title:"☸️ The Buddhist Heritage Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Sanchi_Stupa.jpg",
+
+monument:"Sanchi Stupa",
+
+fact:"The Great Stupa at Sanchi is an important Buddhist heritage site associated with Emperor Ashoka."
+},
+
+
+/* 6 */
+
+{
+title:"🗼 The Victory Tower Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Qutb_Minar_in_Delhi_03-2016_img3.jpg",
+
+monument:"Qutub Minar",
+
+fact:"Qutub Minar is a famous historical tower in Delhi and an important example of Indo-Islamic architecture."
+},
+
+
+/* 7 */
+
+{
+title:"🌞 The Sun Temple Puzzle",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Konark_Sun_Temple.jpg",
+
+monument:"Konark Sun Temple",
+
+fact:"The Konark Sun Temple in Odisha is famous for its architecture designed like the chariot of the Sun God."
+},
+
+
+/* 8 */
+
+{
+title:"🏛️ The Heritage Finale",
+
+image:"https://commons.wikimedia.org/wiki/Special:Redirect/file/Gateway_of_India_Mumbai_03-2016_img3.jpg",
+
+monument:"Gateway of India",
+
+fact:"The Gateway of India is a famous landmark in Mumbai overlooking the Arabian Sea."
+}
+
+];
+
+
+let currentMission = 0;
+
+let lives = 3;
+
+let xp = 0;
+
+let coins = 0;
+
+let discovered = [];
+
+let rotations = [];
+
+
+/* =========================================
+   LOAD MISSION
+========================================= */
+
+function loadMission(){
+
+    if(currentMission >= missions.length){
+
+        showFinal();
+
+        return;
+
+    }
+
+
+    const mission = missions[currentMission];
+
+
+    document.getElementById("missionNumber")
+    .textContent = currentMission + 1;
+
+
+    document.getElementById("progress")
+    .style.width =
+    ((currentMission) / missions.length * 100) + "%";
+
+
+    createRotationPuzzle(mission);
+
+}
+
+
+/* =========================================
+   CREATE PUZZLE
+========================================= */
+
+function createRotationPuzzle(mission){
+
+    rotations = [];
+
+
+    for(let i = 0; i < 9; i++){
+
+        rotations[i] =
+        Math.floor(Math.random() * 4) * 90;
+
+    }
+
+
+    /* Ensure puzzle is mixed */
+
+    if(
+        rotations.filter(r => r !== 0).length < 3
+    ){
+
+        rotations[0] = 90;
+
+        rotations[4] = 180;
+
+        rotations[8] = 270;
+
+    }
+
+
+    let html = `
+
+    <div class="mission">
+
+        <span class="challenge-type">
+        🔄 ROTATION PUZZLE
+        </span>
+
+        <h2 class="mission-title">
+        ${mission.title}
+        </h2>
+
+        <div class="instructions">
+
+        🔄 Click each picture piece to rotate it.
+
+        <br>
+
+        🧩 Every click rotates the piece 90°.
+
+        <br>
+
+        🎯 Reconstruct the complete monument.
+
+        <br>
+
+        🟢 Correct pieces will get a green border.
+
+        </div>
+
+
+        <div
+        class="rotate-board"
+        id="rotateBoard">
+        </div>
+
+
+        <button
+        class="game-btn check-btn"
+        onclick="checkRotation()">
+
+        🔎 Check Picture
+
+        </button>
+
+
+        <div
+        id="feedback"
+        class="feedback">
+        </div>
+
+
+        <button
+        id="nextButton"
+        class="game-btn next-btn"
+        onclick="nextMission()"
+        style="display:none;">
+
+        Next Monument ➜
+
+        </button>
+
+    </div>
+
+    `;
+
+
+    document.getElementById("gameArea")
+    .innerHTML = html;
+
+
+    createPieces(mission);
+
+}
+
+
+/* =========================================
+   CREATE IMAGE PIECES
+========================================= */
+
+function createPieces(mission){
+
+    const board =
+    document.getElementById("rotateBoard");
+
+
+    for(let i = 0; i < 9; i++){
+
+        const piece =
+        document.createElement("div");
+
+
+        piece.className =
+        "rotate-piece";
+
+
+        piece.id =
+        "piece" + i;
+
+
+        const img =
+        document.createElement("img");
+
+
+        img.src =
+        mission.image;
+
+
+        img.alt =
+        "Monument puzzle";
+
+
+        /*
+        IMPORTANT:
+        Divide original picture into 3x3 sections.
+        */
+
+        const column =
+        i % 3;
+
+        const row =
+        Math.floor(i / 3);
+
+
+        img.style.left =
+        "-" + (column * 100) + "%";
+
+
+        img.style.top =
+        "-" + (row * 100) + "%";
+
+
+        piece.appendChild(img);
+
+
+        piece.style.transform =
+        "rotate(" + rotations[i] + "deg)";
+
+
+        piece.onclick =
+        function(){
+
+            rotatePiece(i);
+
+        };
+
+
+        board.appendChild(piece);
+
+
+        /*
+        If image fails to load,
+        show a visible fallback instead of black.
+        */
+
+        img.onerror =
+        function(){
+
+            piece.style.background =
+            "linear-gradient(135deg,#f59e0b,#7c3f12)";
+
+            piece.innerHTML =
+            "<span style='font-size:45px;display:flex;align-items:center;justify-content:center;height:100%;'>🏛️</span>";
+
+        };
+
+    }
+
+}
+
+
+/* =========================================
+   ROTATE
+========================================= */
+
+function rotatePiece(index){
+
+    rotations[index] =
+    (rotations[index] + 90) % 360;
+
+
+    const piece =
+    document.getElementById("piece" + index);
+
+
+    piece.style.transform =
+    "rotate(" + rotations[index] + "deg)";
+
+
+    if(rotations[index] === 0){
+
+        piece.classList.add("correct");
+
+    }
+
+    else{
+
+        piece.classList.remove("correct");
+
+    }
+
+}
+
+
+/* =========================================
+   CHECK
+========================================= */
+
+function checkRotation(){
+
+    const correct =
+    rotations.every(
+        rotation => rotation === 0
+    );
+
+
+    const feedback =
+    document.getElementById("feedback");
+
+
+    if(correct){
+
+        solveMission();
+
+    }
+
+    else{
+
+        lives--;
+
+
+        document.getElementById("lives")
+        .textContent = lives;
+
+
+        feedback.className =
+        "feedback wrong";
+
+
+        feedback.innerHTML = `
+
+        ❌ <b>Not correct yet!</b>
+
+        <br><br>
+
+        Some pieces are still rotated.
+
+        <br>
+
+        ❤️ Remaining Lives:
+        ${lives}
+
+        <br><br>
+
+        💡 Check the dome, towers,
+        windows and edges carefully.
+
+        `;
+
+
+        if(lives <= 0){
+
+            lives = 3;
+
+
+            document.getElementById("lives")
+            .textContent = lives;
+
+
+            feedback.innerHTML += `
+
+            <br><br>
+
+            ❤️ Your lives have been restored.
+            Try again!
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   SOLVE
+========================================= */
+
+function solveMission(){
+
+    const mission =
+    missions[currentMission];
+
+
+    xp += 30;
+
+    coins += 20;
+
+
+    discovered.push(
+    mission.monument
+    );
+
+
+    document.getElementById("xp")
+    .textContent = xp;
+
+
+    document.getElementById("coins")
+    .textContent = coins;
+
+
+    updateCollection();
+
+
+    const feedback =
+    document.getElementById("feedback");
+
+
+    feedback.className =
+    "feedback correct";
+
+
+    feedback.innerHTML = `
+
+    🎉 <b>Picture Completed!</b>
+
+    <br><br>
+
+    ⭐ +30 XP
+
+    &nbsp;&nbsp;
+
+    🪙 +20 Coins
+
+    <br><br>
+
+    🏛️ <b>Monument:</b>
+    ${mission.monument}
+
+    <br><br>
+
+    📚 <b>Heritage Fact:</b>
+    ${mission.fact}
+
+    `;
+
+
+    document.getElementById("nextButton")
+    .style.display = "inline-block";
+
+
+    document.querySelectorAll(".rotate-piece")
+    .forEach(piece => {
+
+        piece.style.pointerEvents = "none";
+
+        piece.classList.add("correct");
+
+    });
+
+}
+
+
+/* =========================================
+   NEXT
+========================================= */
+
+function nextMission(){
+
+    currentMission++;
+
+    loadMission();
+
+}
+
+
+/* =========================================
+   COLLECTION
+========================================= */
+
+function updateCollection(){
+
+    const badges =
+    document.getElementById("badges");
+
+
+    if(discovered.length === 0){
+
+        badges.innerHTML = `
+
+        <div class="badge">
+        No monuments discovered yet
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    badges.innerHTML =
+    discovered.map(
+        (monument,index) => `
+
+        <div class="badge">
+
+        🏛️ ${index + 1}. ${monument}
+
+        </div>
+
+        `
+    ).join("");
+
+}
+
+
+/* =========================================
+   FINAL
+========================================= */
+
+function showFinal(){
+
+    document.getElementById("gameArea")
+    .innerHTML = "";
+
+
+    document.querySelector(".intro")
+    .style.display = "none";
+
+
+    document.querySelector(".collection")
+    .style.display = "none";
+
+
+    document.getElementById("finalScreen")
+    .style.display = "block";
+
+
+    document.getElementById("finalXP")
+    .textContent = xp;
+
+
+    document.getElementById("finalCoins")
+    .textContent = coins;
+
+
+    document.getElementById("progress")
+    .style.width = "100%";
+
+}
+
+
+/* =========================================
+   RESTART
+========================================= */
+
+function restartGame(){
+
+    currentMission = 0;
+
+    lives = 3;
+
+    xp = 0;
+
+    coins = 0;
+
+    discovered = [];
+
+
+    document.getElementById("lives")
+    .textContent = lives;
+
+
+    document.getElementById("xp")
+    .textContent = xp;
+
+
+    document.getElementById("coins")
+    .textContent = coins;
+
+
+    document.querySelector(".intro")
+    .style.display = "block";
+
+
+    document.querySelector(".collection")
+    .style.display = "block";
+
+
+    document.getElementById("finalScreen")
+    .style.display = "none";
+
+
+    updateCollection();
+
+    loadMission();
+
+}
+
+
+/* =========================================
+   START GAME
+========================================= */
+
+loadMission();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bharat Quest - Adventure Map</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fff7e6, #e8f5e9);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #7b1e1e, #d35400);
+            color: white;
+            padding: 22px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 34px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+        }
+
+        .profile {
+            width: 90%;
+            max-width: 1000px;
+            margin: 25px auto 10px;
+            background: white;
+            border-radius: 18px;
+            padding: 18px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+
+        .explorer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ffe0b2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .explorer h2 {
+            margin: 0;
+            color: #7b1e1e;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat {
+            background: #fff3cd;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .map-container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 25px auto 50px;
+            text-align: center;
+        }
+
+        .map-container h2 {
+            color: #7b1e1e;
+            font-size: 28px;
+        }
+
+        .map-container > p {
+            color: #666;
+        }
+
+        .worlds {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .world {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 18px;
+            min-height: 270px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: 0.3s;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .world:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+            border-color: #f39c12;
+        }
+
+        .world-icon {
+            font-size: 55px;
+        }
+
+        .world h3 {
+            margin: 12px 0 8px;
+            color: #7b1e1e;
+            font-size: 21px;
+        }
+
+        .world p {
+            color: #666;
+            min-height: 42px;
+        }
+
+        .mission {
+            font-size: 13px;
+            color: #d35400;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .play-btn {
+            display: inline-block;
+            padding: 11px 22px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .locked {
+            background: #eeeeee;
+            opacity: 0.7;
+        }
+
+        .locked:hover {
+            transform: none;
+            border-color: transparent;
+        }
+
+        .lock {
+            font-size: 50px;
+        }
+
+        .locked h3 {
+            color: #777;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #7b1e1e;
+            color: white;
+        }
+
+        @media (max-width: 850px) {
+            .worlds {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .profile {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .worlds {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🇮🇳 Bharat Quest</h1>
+        <p>Learn India Through Adventure, Missions & Challenges</p>
+    </div>
+
+    <div class="profile">
+
+        <div class="explorer">
+            <div class="avatar">🧭</div>
+
+            <div>
+                <h2>Heritage Explorer</h2>
+                <small>Your journey through India's heritage begins!</small>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat">⭐ Level 1</div>
+            <div class="stat">⚡ 0 XP</div>
+            <div class="stat">🪙 0 Coins</div>
+        </div>
+
+    </div>
+
+    <div class="map-container">
+
+        <h2>🗺️ Your Heritage Adventure Map</h2>
+
+        <p>
+            Complete each mission to unlock the next chapter of India's incredible story!
+        </p>
+
+        <div class="worlds">
+
+            <!-- WORLD 1 -->
+            <div class="world">
+                <div class="world-icon">🏺</div>
+
+                <h3>Ancient India</h3>
+
+                <p>
+                    Discover ancient civilizations, inventions and mysteries.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Archaeologist Quest
+                </div>
+
+                <a href="/ancient-india" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+
+            <!-- WORLD 2 -->
+            <div class="world">
+                <div class="world-icon">👑</div>
+
+                <h3>Great Kingdoms</h3>
+
+                <p>
+                    Become a ruler and make important kingdom decisions.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Build Your Kingdom
+                </div>
+
+                <a href="/great-kingdoms" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+
+            <!-- WORLD 3 -->
+            <div class="world">
+                <div class="world-icon">🇮🇳</div>
+
+                <h3>Freedom Quest</h3>
+
+                <p>
+                    Travel through India's journey towards independence.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Journey to Freedom
+                </div>
+
+                <a href="/freedom-quest" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+
+            <!-- WORLD 4 -->
+            <div class="world">
+                <div class="world-icon">🎭</div>
+
+                <h3>Culture Explorer</h3>
+
+                <p>
+                    Decode clues and discover India's colourful states.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Guess the State
+                </div>
+
+                <a href="/culture-explorer" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+
+            <!-- WORLD 5 -->
+            <div class="world">
+                <div class="world-icon">🎉</div>
+
+                <h3>Festival Challenge</h3>
+
+                <p>
+                    Plan a traditional Indian festival step by step.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Festival Planner
+                </div>
+
+                <a href="/festival-challenge" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+
+            <!-- WORLD 6 -->
+            <div class="world">
+                <div class="world-icon">🏛️</div>
+
+                <h3>Monument Mystery</h3>
+
+                <p>
+                    Become a Heritage Detective and identify famous monuments.
+                </p>
+
+                <div class="mission">
+                    🎯 Mission: Solve the Mystery
+                </div>
+
+                <a href="/monument-mystery" class="play-btn">
+                    ▶ Start Mission
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        🏆 Complete all missions and become the <b>Master of Bharat!</b>
+    </div>
+
+</body>
+</html>

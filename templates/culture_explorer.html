@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Culture Explorer - India Mystery Quest</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    background:
+        linear-gradient(135deg,#fff8e1,#e8f5e9);
+    color:#263238;
+}
+
+.header{
+    background:linear-gradient(135deg,#ff9933,#fff,#138808);
+    padding:18px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.25);
+}
+
+.header h1{
+    font-size:32px;
+}
+
+.header p{
+    margin-top:5px;
+    font-weight:bold;
+}
+
+.stats{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+
+.stat{
+    background:white;
+    padding:9px 16px;
+    border-radius:25px;
+    font-weight:bold;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+/* MAP */
+
+.map-title{
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.map-title h2{
+    font-size:27px;
+}
+
+.mystery-map{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:8px;
+    margin-bottom:22px;
+}
+
+.map-node{
+    height:55px;
+    border-radius:15px;
+    background:#cfd8dc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.map-node.active{
+    background:#ff9933;
+    color:white;
+    transform:scale(1.05);
+}
+
+.map-node.done{
+    background:#138808;
+    color:white;
+}
+
+/* GAME */
+
+.game-panel{
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    box-shadow:0 7px 25px rgba(0,0,0,.2);
+}
+
+.mission-header{
+    text-align:center;
+}
+
+.mission-header h2{
+    font-size:29px;
+}
+
+.mission-type{
+    display:inline-block;
+    margin-top:8px;
+    background:#263238;
+    color:white;
+    padding:7px 15px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+.progress{
+    height:13px;
+    background:#ddd;
+    border-radius:20px;
+    margin:20px 0;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#ff9933,#138808);
+    transition:.4s;
+}
+
+/* VISUAL */
+
+.visual-area{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin:20px 0;
+}
+
+.visual-card{
+    min-height:190px;
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:15px;
+    box-shadow:inset 0 0 20px rgba(0,0,0,.15);
+}
+
+.visual-card:first-child{
+    background:linear-gradient(135deg,#ffe082,#ff8a65);
+}
+
+.visual-card:last-child{
+    background:linear-gradient(135deg,#b2dfdb,#81c784);
+}
+
+.visual-icon{
+    font-size:90px;
+}
+
+.visual-card p{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+/* CLUES */
+
+.clue-area{
+    background:#263238;
+    color:white;
+    padding:20px;
+    border-radius:20px;
+    margin-top:20px;
+}
+
+.clue-area h3{
+    text-align:center;
+}
+
+.clues{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:15px;
+}
+
+.clue{
+    background:#37474f;
+    border-radius:15px;
+    padding:15px;
+    text-align:center;
+    min-height:110px;
+}
+
+.clue.locked{
+    opacity:.8;
+}
+
+.clue button{
+    background:#ff9933;
+    border:none;
+    color:white;
+    padding:9px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.clue-text{
+    margin-top:10px;
+    font-size:14px;
+    line-height:1.4;
+}
+
+/* QUESTION */
+
+.question-box{
+    background:#fff8e1;
+    border-left:7px solid #ff9933;
+    padding:20px;
+    border-radius:18px;
+    margin-top:20px;
+}
+
+.question-box h3{
+    margin-bottom:15px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.option{
+    background:white;
+    border:2px solid #ddd;
+    border-radius:13px;
+    padding:14px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.option:hover{
+    border-color:#ff9933;
+    background:#fff3e0;
+}
+
+.option.correct{
+    background:#c8e6c9;
+    border-color:#2e7d32;
+}
+
+.option.wrong{
+    background:#ffcdd2;
+    border-color:#c62828;
+}
+
+/* MATCH */
+
+.match-area{
+    background:#e3f2fd;
+    padding:20px;
+    border-radius:18px;
+    margin-top:20px;
+    text-align:center;
+}
+
+.match-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+.match-item{
+    background:white;
+    padding:15px 8px;
+    border-radius:13px;
+    cursor:pointer;
+    border:3px solid transparent;
+    font-weight:bold;
+}
+
+.match-item.selected{
+    border-color:#1565c0;
+}
+
+.match-item.matched{
+    background:#c8e6c9;
+    border-color:#2e7d32;
+}
+
+/* BUTTON */
+
+.next-btn{
+    display:none;
+    margin:20px auto 0;
+    padding:14px 30px;
+    border:none;
+    border-radius:25px;
+    background:#138808;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.message{
+    text-align:center;
+    min-height:28px;
+    margin-top:15px;
+    font-weight:bold;
+    font-size:17px;
+}
+
+/* FINAL */
+
+.final-screen{
+    display:none;
+    text-align:center;
+    background:white;
+    border-radius:25px;
+    padding:50px 20px;
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+
+.final-screen .big{
+    font-size:90px;
+}
+
+.final-screen h1{
+    font-size:40px;
+    margin:15px;
+}
+
+.final-screen p{
+    line-height:1.8;
+    font-size:18px;
+}
+
+@media(max-width:750px){
+
+    .mystery-map{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .visual-area{
+        grid-template-columns:1fr;
+    }
+
+    .clues{
+        grid-template-columns:1fr;
+    }
+
+    .options{
+        grid-template-columns:1fr;
+    }
+
+    .match-grid{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <h1>🎭 Culture Explorer 🇮🇳</h1>
+
+    <p>
+        🕵️ India Mystery Journey
+    </p>
+
+    <div class="stats">
+
+        <div class="stat">
+            ⭐ XP: <span id="xp">0</span>
+        </div>
+
+        <div class="stat">
+            🪙 Coins: <span id="coins">0</span>
+        </div>
+
+        <div class="stat">
+            ❤️ Lives: <span id="lives">3</span>
+        </div>
+
+        <div class="stat">
+            🔐 Mission: <span id="missionNumber">1</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<div class="map-title">
+
+    <h2>🗺️ India Cultural Mystery Map</h2>
+
+    <p>
+        States are hidden. Investigate the clues and discover them!
+    </p>
+
+</div>
+
+
+<!-- MYSTERY MAP -->
+
+<div class="mystery-map">
+
+    <div class="map-node active" id="node1">🔎 1</div>
+    <div class="map-node" id="node2">🔒 2</div>
+    <div class="map-node" id="node3">🔒 3</div>
+    <div class="map-node" id="node4">🔒 4</div>
+    <div class="map-node" id="node5">🔒 5</div>
+    <div class="map-node" id="node6">🔒 6</div>
+
+</div>
+
+
+<!-- GAME -->
+
+<div class="game-panel" id="gamePanel">
+
+    <div class="mission-header">
+
+        <h2 id="missionTitle">
+            🔐 Mystery Investigation
+        </h2>
+
+        <span
+            class="mission-type"
+            id="missionType">
+            HIDDEN CLUES
+        </span>
+
+    </div>
+
+
+    <div class="progress">
+
+        <div
+            class="progress-bar"
+            id="progressBar">
+        </div>
+
+    </div>
+
+
+    <!-- VISUAL -->
+
+    <div class="visual-area">
+
+        <div class="visual-card">
+
+            <div
+                class="visual-icon"
+                id="visual1">
+                ❓
+            </div>
+
+            <p id="visualText1">
+                Unknown Cultural Object
+            </p>
+
+        </div>
+
+
+        <div class="visual-card">
+
+            <div
+                class="visual-icon"
+                id="visual2">
+                🔍
+            </div>
+
+            <p id="visualText2">
+                Investigate carefully
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLUES -->
+
+    <div class="clue-area">
+
+        <h3>
+            🔍 Find the Hidden Clues
+        </h3>
+
+        <p style="text-align:center;margin-top:5px;">
+            Do not guess before investigating!
+        </p>
+
+        <div
+            class="clues"
+            id="clues">
+        </div>
+
+    </div>
+
+
+    <!-- QUESTION -->
+
+    <div class="question-box">
+
+        <h3 id="question">
+            🔒 Unlock all clues first...
+        </h3>
+
+        <div
+            class="options"
+            id="options">
+        </div>
+
+    </div>
+
+
+    <!-- MATCH CHALLENGE -->
+
+    <div
+        class="match-area"
+        id="matchArea">
+
+        <h3>
+            🧩 Bonus Culture Challenge
+        </h3>
+
+        <p>
+            Find the two items that belong together.
+        </p>
+
+        <div
+            class="match-grid"
+            id="matchGrid">
+        </div>
+
+    </div>
+
+
+    <div
+        class="message"
+        id="message">
+    </div>
+
+
+    <button
+        class="next-btn"
+        id="nextBtn"
+        onclick="nextMission()">
+
+        ➡️ Next Mystery
+
+    </button>
+
+</div>
+
+
+<!-- FINAL -->
+
+<div
+    class="final-screen"
+    id="finalScreen">
+
+    <div class="big">
+        🏆🇮🇳🎭
+    </div>
+
+    <h1>
+        INDIA CULTURE MASTER!
+    </h1>
+
+    <p>
+        You solved mysteries from different parts of India.
+    </p>
+
+    <br>
+
+    <h2>
+        🌟 Cultural Explorer Champion 🌟
+    </h2>
+
+    <br>
+
+    <p>
+        🔎 Clues investigated<br>
+        🧩 Cultural puzzles solved<br>
+        🗺️ Hidden states discovered<br>
+        🏆 India's cultural mystery completed
+    </p>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   MIXED INDIA MYSTERIES
+========================================= */
+
+
+const missions = [
+
+/* 1 */
+
+{
+    type:"🔎 HIDDEN CLUES",
+
+    visual1:"🥁",
+    text1:"A traditional musical instrument",
+
+    visual2:"🌾",
+    text2:"A harvest celebration clue",
+
+    clues:[
+        "This energetic folk dance is associated with harvest celebrations.",
+        "The tradition is strongly associated with a northern Indian state.",
+        "The state is famous for wheat cultivation."
+    ],
+
+    question:
+    "Which dance is hidden in this mystery?",
+
+    options:[
+        "Garba",
+        "Bhangra",
+        "Ghoomar",
+        "Kathakali"
+    ],
+
+    answer:"Bhangra",
+
+    match:[
+        ["💃","Garba"],
+        ["🛕","Tamil Nadu"],
+        ["🎭","Kathakali"],
+        ["🐪","Rajasthan"]
+    ]
+},
+
+
+/* 2 */
+
+{
+    type:"🧩 CULTURAL DETECTIVE",
+
+    visual1:"🎨",
+    text1:"A decorative floor design",
+
+    visual2:"🏠",
+    text2:"A traditional home clue",
+
+    clues:[
+        "This design is commonly made near the entrance of homes.",
+        "Rice flour is traditionally used.",
+        "It is especially common in Tamil cultural traditions."
+    ],
+
+    question:
+    "What is this traditional art form?",
+
+    options:[
+        "Bandhani",
+        "Kolam",
+        "Warli",
+        "Garba"
+    ],
+
+    answer:"Kolam",
+
+    match:[
+        ["🎨","Kolam"],
+        ["🎭","Kerala"],
+        ["🏰","Rajasthan"],
+        ["🪕","Punjab"]
+    ]
+},
+
+
+/* 3 */
+
+{
+    type:"🎭 VISUAL MYSTERY",
+
+    visual1:"🎭",
+    text1:"A dramatic traditional performance",
+
+    visual2:"👀",
+    text2:"Facial expression is important",
+
+    clues:[
+        "The performers use elaborate makeup.",
+        "Facial expressions play an important role.",
+        "This traditional art form developed in Kerala."
+    ],
+
+    question:
+    "Which performance tradition is described?",
+
+    options:[
+        "Bharatanatyam",
+        "Kathakali",
+        "Bhangra",
+        "Ghoomar"
+    ],
+
+    answer:"Kathakali",
+
+    match:[
+        ["🥥","Kerala"],
+        ["🌾","Punjab"],
+        ["💃","Gujarat"],
+        ["🏰","Rajasthan"]
+    ]
+},
+
+
+/* 4 */
+
+{
+    type:"🏰 ROYAL MYSTERY",
+
+    visual1:"🏰",
+    text1:"A grand historic structure",
+
+    visual2:"🐪",
+    text2:"A desert travel clue",
+
+    clues:[
+        "This region is famous for forts and palaces.",
+        "Desert landscapes are an important part of its identity.",
+        "Camel travel has historically been important here."
+    ],
+
+    question:
+    "Which state is hidden in this mystery?",
+
+    options:[
+        "Kerala",
+        "Rajasthan",
+        "Punjab",
+        "Tamil Nadu"
+    ],
+
+    answer:"Rajasthan",
+
+    match:[
+        ["🐪","Rajasthan"],
+        ["💃","Garba"],
+        ["🎭","Kathakali"],
+        ["🌾","Pongal"]
+    ]
+},
+
+
+/* 5 */
+
+{
+    type:"🎉 FESTIVAL MYSTERY",
+
+    visual1:"💃",
+    text1:"A colourful circular dance",
+
+    visual2:"🪔",
+    text2:"Night festival clue",
+
+    clues:[
+        "People perform this dance in circles.",
+        "It is strongly connected with a nine-night festival.",
+        "The tradition is especially famous in western India."
+    ],
+
+    question:
+    "Which dance is described?",
+
+    options:[
+        "Bhangra",
+        "Garba",
+        "Ghoomar",
+        "Kathakali"
+    ],
+
+    answer:"Garba",
+
+    match:[
+        ["💃","Garba"],
+        ["🕺","Bhangra"],
+        ["🪷","Pongal"],
+        ["🎭","Kathakali"]
+    ]
+},
+
+
+/* 6 */
+
+{
+    type:"🌾 HARVEST MYSTERY",
+
+    visual1:"🍚",
+    text1:"A special rice preparation",
+
+    visual2:"☀️",
+    text2:"A traditional harvest celebration",
+
+    clues:[
+        "It is a major harvest celebration.",
+        "A special rice preparation is traditionally cooked.",
+        "The celebration is strongly associated with Tamil culture."
+    ],
+
+    question:
+    "Which festival is hidden in this mystery?",
+
+    options:[
+        "Onam",
+        "Pongal",
+        "Baisakhi",
+        "Navratri"
+    ],
+
+    answer:"Pongal",
+
+    match:[
+        ["🍚","Pongal"],
+        ["🎭","Kathakali"],
+        ["🏰","Rajasthan"],
+        ["🕺","Bhangra"]
+    ]
+},
+
+
+/* 7 */
+
+{
+    type:"🧵 CRAFT MYSTERY",
+
+    visual1:"🧵",
+    text1:"A colourful textile",
+
+    visual2:"🎨",
+    text2:"A traditional dyeing clue",
+
+    clues:[
+        "This craft is connected with colourful textiles.",
+        "A tie-and-dye technique is used.",
+        "It is strongly associated with Gujarat."
+    ],
+
+    question:
+    "Which traditional craft is described?",
+
+    options:[
+        "Bandhani",
+        "Kolam",
+        "Ghoomar",
+        "Kathakali"
+    ],
+
+    answer:"Bandhani",
+
+    match:[
+        ["🧵","Bandhani"],
+        ["🥥","Kerala"],
+        ["🌾","Punjab"],
+        ["🛕","Tamil Nadu"]
+    ]
+},
+
+
+/* 8 */
+
+{
+    type:"🏛️ HERITAGE MYSTERY",
+
+    visual1:"🛕",
+    text1:"A famous golden religious structure",
+
+    visual2:"🌊",
+    text2:"A sacred city clue",
+
+    clues:[
+        "This famous structure is covered in gold.",
+        "It is an important pilgrimage destination.",
+        "It is located in the city of Amritsar."
+    ],
+
+    question:
+    "Which monument is hidden in this mystery?",
+
+    options:[
+        "Golden Temple",
+        "Charminar",
+        "Hawa Mahal",
+        "Brihadeeswarar Temple"
+    ],
+
+    answer:"Golden Temple",
+
+    match:[
+        ["🛕","Golden Temple"],
+        ["🏰","Hawa Mahal"],
+        ["💃","Garba"],
+        ["🌾","Pongal"]
+    ]
+},
+
+
+/* 9 */
+
+{
+    type:"💃 DANCE MYSTERY",
+
+    visual1:"💃",
+    text1:"A graceful folk performance",
+
+    visual2:"👗",
+    text2:"Traditional colourful dress",
+
+    clues:[
+        "This is a traditional folk dance.",
+        "It is associated with graceful circular movements.",
+        "It is strongly connected with Rajasthan."
+    ],
+
+    question:
+    "Which dance is hidden in the clues?",
+
+    options:[
+        "Bhangra",
+        "Ghoomar",
+        "Garba",
+        "Bharatanatyam"
+    ],
+
+    answer:"Ghoomar",
+
+    match:[
+        ["💃","Ghoomar"],
+        ["🎭","Kathakali"],
+        ["🧵","Bandhani"],
+        ["🥁","Bhangra"]
+    ]
+},
+
+
+/* 10 */
+
+{
+    type:"🇮🇳 GRAND INDIA MYSTERY",
+
+    visual1:"🇮🇳",
+    text1:"One country, many traditions",
+
+    visual2:"🗺️",
+    text2:"All clues are mixed",
+
+    clues:[
+        "One clue points to a classical dance from the south.",
+        "Another clue points to a harvest festival from the north.",
+        "A third clue points to a colourful dance from the west."
+    ],
+
+    question:
+    "Which statement best represents India's cultural heritage?",
+
+    options:[
+        "Only one cultural tradition",
+        "Many regional cultures and traditions",
+        "Only classical dance",
+        "Only festival traditions"
+    ],
+
+    answer:"Many regional cultures and traditions",
+
+    match:[
+        ["🇮🇳","Many Cultures"],
+        ["💃","Regional Dance"],
+        ["🎉","Festivals"],
+        ["🎨","Traditional Art"]
+    ]
+}
+
+];
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let currentMission = 0;
+
+let xp = 0;
+
+let coins = 0;
+
+let lives = 3;
+
+let unlockedClues = 0;
+
+let answered = false;
+
+let selectedMatch = null;
+
+
+/* =========================================
+   LOAD MISSION
+========================================= */
+
+function loadMission(){
+
+    const mission =
+        missions[currentMission];
+
+    answered = false;
+
+    unlockedClues = 0;
+
+    selectedMatch = null;
+
+    document.getElementById("missionNumber").innerText =
+        currentMission + 1;
+
+    document.getElementById("missionTitle").innerText =
+        "🔐 Mission "+(currentMission+1)+
+        " — Mystery Investigation";
+
+    document.getElementById("missionType").innerText =
+        mission.type;
+
+    document.getElementById("visual1").innerText =
+        mission.visual1;
+
+    document.getElementById("visualText1").innerText =
+        mission.text1;
+
+    document.getElementById("visual2").innerText =
+        mission.visual2;
+
+    document.getElementById("visualText2").innerText =
+        mission.text2;
+
+    document.getElementById("question").innerText =
+        "🔒 Investigate all clues first...";
+
+    document.getElementById("options").innerHTML =
+        "";
+
+    document.getElementById("message").innerText =
+        "";
+
+    document.getElementById("nextBtn").style.display =
+        "none";
+
+    createClues(mission.clues);
+
+    createMatch(mission.match);
+
+    updateProgress();
+
+    updateMap();
+
+}
+
+
+/* =========================================
+   CLUES
+========================================= */
+
+function createClues(clues){
+
+    const container =
+        document.getElementById("clues");
+
+    container.innerHTML = "";
+
+    clues.forEach((clue,index)=>{
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "clue locked";
+
+        div.id =
+            "clue"+index;
+
+        div.innerHTML = `
+
+            <div style="font-size:30px">
+                🔒
+            </div>
+
+            <button onclick="unlockClue(${index})">
+                🔍 Investigate
+            </button>
+
+            <div
+                class="clue-text"
+                id="clueText${index}">
+            </div>
+
+        `;
+
+        container.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================
+   UNLOCK CLUE
+========================================= */
+
+function unlockClue(index){
+
+    if(index !== unlockedClues){
+
+        document.getElementById("message").innerText =
+            "🔒 You must investigate clues in order!";
+
+        return;
+
+    }
+
+    const mission =
+        missions[currentMission];
+
+    const box =
+        document.getElementById("clue"+index);
+
+    box.classList.remove("locked");
+
+    box.innerHTML = `
+
+        <div style="font-size:30px">
+            🔓
+        </div>
+
+        <div class="clue-text">
+            ${mission.clues[index]}
+        </div>
+
+    `;
+
+    unlockedClues++;
+
+    document.getElementById("message").innerText =
+        "🔎 Clue "+unlockedClues+" discovered!";
+
+    if(unlockedClues === mission.clues.length){
+
+        showQuestion();
+
+    }
+
+}
+
+
+/* =========================================
+   SHOW QUESTION
+========================================= */
+
+function showQuestion(){
+
+    const mission =
+        missions[currentMission];
+
+    document.getElementById("question").innerText =
+        "🧠 "+mission.question;
+
+    createOptions(mission);
+
+}
+
+
+/* =========================================
+   RANDOM OPTIONS
+========================================= */
+
+function createOptions(mission){
+
+    const container =
+        document.getElementById("options");
+
+    container.innerHTML = "";
+
+    let shuffled =
+        [...mission.options];
+
+    shuffled.sort(
+        ()=>Math.random()-0.5
+    );
+
+    shuffled.forEach(option=>{
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "option";
+
+        button.innerText =
+            option;
+
+        button.onclick = function(){
+
+            checkAnswer(
+                button,
+                option,
+                mission.answer
+            );
+
+        };
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================
+   ANSWER
+========================================= */
+
+function checkAnswer(
+    button,
+    selected,
+    correct
+){
+
+    if(answered) return;
+
+    if(selected === correct){
+
+        answered = true;
+
+        button.classList.add("correct");
+
+        document
+            .querySelectorAll(".option")
+            .forEach(btn=>{
+                btn.disabled=true;
+            });
+
+        xp += 25;
+
+        coins += 15;
+
+        document.getElementById("xp").innerText =
+            xp;
+
+        document.getElementById("coins").innerText =
+            coins;
+
+        document.getElementById("message").innerText =
+            "🎉 Correct! Mystery solved! +25 XP +15 Coins";
+
+        document.getElementById("nextBtn").style.display =
+            "block";
+
+    }
+
+    else{
+
+        button.classList.add("wrong");
+
+        lives--;
+
+        document.getElementById("lives").innerText =
+            lives;
+
+        document.getElementById("message").innerText =
+            "❌ Wrong! Use the clues and try again.";
+
+        if(lives <= 0){
+
+            lives = 3;
+
+            document.getElementById("lives").innerText =
+                lives;
+
+            setTimeout(()=>{
+
+                alert(
+                    "❤️ All lives lost!\nMission restarted."
+                );
+
+                loadMission();
+
+            },700);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   MATCH GAME
+========================================= */
+
+function createMatch(items){
+
+    const grid =
+        document.getElementById("matchGrid");
+
+    grid.innerHTML = "";
+
+    let shuffled =
+        [...items];
+
+    shuffled.sort(
+        ()=>Math.random()-0.5
+    );
+
+    shuffled.forEach(item=>{
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "match-item";
+
+        div.innerHTML =
+            item[0]+"<br>"+item[1];
+
+        div.dataset.value =
+            item[1];
+
+        div.onclick = function(){
+
+            selectMatch(div);
+
+        };
+
+        grid.appendChild(div);
+
+    });
+
+}
+
+
+/* =========================================
+   MATCH SELECT
+========================================= */
+
+function selectMatch(element){
+
+    if(element.classList.contains("matched"))
+        return;
+
+    if(selectedMatch === null){
+
+        selectedMatch = element;
+
+        element.classList.add("selected");
+
+        document.getElementById("message").innerText =
+            "🧩 Select another item to complete the match.";
+
+        return;
+
+    }
+
+    if(selectedMatch.dataset.value === element.dataset.value){
+
+        selectedMatch.classList.remove("selected");
+
+        selectedMatch.classList.add("matched");
+
+        element.classList.add("matched");
+
+        xp += 10;
+
+        coins += 5;
+
+        document.getElementById("xp").innerText =
+            xp;
+
+        document.getElementById("coins").innerText =
+            coins;
+
+        document.getElementById("message").innerText =
+            "🎉 Cultural match found! +10 XP";
+
+        selectedMatch = null;
+
+    }
+
+    else{
+
+        element.classList.add("selected");
+
+        document.getElementById("message").innerText =
+            "❌ Not a match. Think about the cultural connection.";
+
+        setTimeout(()=>{
+
+            element.classList.remove("selected");
+
+        },500);
+
+        selectedMatch.classList.remove("selected");
+
+        selectedMatch = null;
+
+    }
+
+}
+
+
+/* =========================================
+   NEXT
+========================================= */
+
+function nextMission(){
+
+    if(currentMission <
+       missions.length-1){
+
+        document.getElementById(
+            "node"+(currentMission+1)
+        ).classList.remove("active");
+
+        document.getElementById(
+            "node"+(currentMission+1)
+        ).classList.add("done");
+
+        currentMission++;
+
+        lives = 3;
+
+        document.getElementById("lives").innerText =
+            lives;
+
+        loadMission();
+
+    }
+
+    else{
+
+        finishGame();
+
+    }
+
+}
+
+
+/* =========================================
+   MAP
+========================================= */
+
+function updateMap(){
+
+    for(let i=1;i<=6;i++){
+
+        const node =
+            document.getElementById("node"+i);
+
+        node.classList.remove("active");
+
+    }
+
+    const currentNode =
+        document.getElementById(
+            "node"+(currentMission+1)
+        );
+
+    currentNode.classList.add("active");
+
+}
+
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+function updateProgress(){
+
+    const percent =
+        (currentMission /
+        missions.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        percent+"%";
+
+}
+
+
+/* =========================================
+   FINISH
+========================================= */
+
+function finishGame(){
+
+    xp += 100;
+
+    coins += 100;
+
+    document.getElementById("xp").innerText =
+        xp;
+
+    document.getElementById("coins").innerText =
+        coins;
+
+    document.getElementById("gamePanel").style.display =
+        "none";
+
+    document.querySelector(".mystery-map").style.display =
+        "none";
+
+    document.querySelector(".map-title").style.display =
+        "none";
+
+    document.getElementById("finalScreen").style.display =
+        "block";
+
+}
+
+
+/* START */
+
+loadMission();
+
+</script>
+
+</body>
+</html>

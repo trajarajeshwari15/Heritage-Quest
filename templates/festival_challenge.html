@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festival Challenge - Bharat Quest</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#fff8e7, #ffe8b5);
+    color: #3b2415;
+}
+
+header {
+    background: linear-gradient(135deg, #7b1e1e, #d97706);
+    color: white;
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.stat {
+    background: rgba(255,255,255,0.18);
+    padding: 9px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.container {
+    width: 92%;
+    max-width: 1100px;
+    margin: 25px auto;
+}
+
+.intro {
+    text-align: center;
+    background: white;
+    padding: 22px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+.intro h2 {
+    margin-top: 0;
+    color: #9a3412;
+}
+
+.progress-box {
+    margin-top: 20px;
+    background: #ead7bd;
+    height: 16px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #16a34a, #eab308);
+    transition: 0.5s;
+}
+
+.mission {
+    margin-top: 25px;
+    background: white;
+    padding: 28px;
+    border-radius: 22px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+}
+
+.mission-number {
+    color: #b45309;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mission h2 {
+    margin-top: 8px;
+    color: #7c2d12;
+}
+
+.visual {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    margin: 20px 0;
+    min-height: 170px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.big-icon {
+    font-size: 80px;
+}
+
+.clue-card {
+    background: #fff;
+    border: 2px dashed #d97706;
+    padding: 15px;
+    border-radius: 15px;
+    max-width: 650px;
+}
+
+.question {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.option {
+    border: 2px solid #e5c49a;
+    background: #fffaf0;
+    padding: 16px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 17px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.option:hover {
+    transform: translateY(-3px);
+    background: #ffedd5;
+}
+
+.option.correct {
+    background: #dcfce7;
+    border-color: #16a34a;
+}
+
+.option.wrong {
+    background: #fee2e2;
+    border-color: #dc2626;
+}
+
+button {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.next-btn {
+    background: #7b1e1e;
+    color: white;
+    margin-top: 20px;
+}
+
+.next-btn:hover {
+    background: #991b1b;
+}
+
+.feedback {
+    margin-top: 18px;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: bold;
+    display: none;
+}
+
+.feedback.correct {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.feedback.wrong {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.timer {
+    float: right;
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.collection {
+    margin-top: 25px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 18px;
+}
+
+.collection h3 {
+    margin-top: 0;
+}
+
+.badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    background: #fef3c7;
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 15px;
+}
+
+.final-screen {
+    display: none;
+    text-align: center;
+    background: white;
+    padding: 45px 25px;
+    border-radius: 25px;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.18);
+}
+
+.final-scene {
+    font-size: 75px;
+    margin: 25px;
+}
+
+.restart-btn {
+    background: #d97706;
+    color: white;
+    margin-top: 15px;
+}
+
+@media(max-width:700px) {
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .timer {
+        float: none;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🎉 Festival Challenge</h1>
+
+    <div class="stats">
+        <div class="stat">❤️ Lives: <span id="lives">3</span></div>
+        <div class="stat">⭐ XP: <span id="xp">0</span></div>
+        <div class="stat">🪙 Coins: <span id="coins">0</span></div>
+        <div class="stat">🏆 Mission: <span id="missionStat">1</span>/20</div>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="intro">
+        <h2>🇮🇳 Become an Indian Festival Planner!</h2>
+
+        <p>
+            Explore India's festivals through clues, puzzles, food,
+            traditions, music, dress and celebrations.
+        </p>
+
+        <p>
+            ⚠️ Festivals are mixed together. Think carefully before answering!
+        </p>
+
+        <div class="progress-box">
+            <div class="progress" id="progress"></div>
+        </div>
+    </div>
+
+    <div id="gameArea"></div>
+
+    <div class="collection">
+        <h3>🎒 Festival Collection</h3>
+
+        <div class="badges" id="badges">
+            <div class="badge">No festival items collected yet</div>
+        </div>
+    </div>
+
+    <div class="final-screen" id="finalScreen">
+
+        <div class="final-scene">
+            🇮🇳 🎉 🪔 🥁 🌾 🐘 🎊
+        </div>
+
+        <h1>🏆 Festival Master!</h1>
+
+        <p>
+            Amazing! You completed the Grand India Festival Challenge.
+        </p>
+
+        <p>
+            You explored different Indian festivals, traditions,
+            foods, dances and celebrations.
+        </p>
+
+        <h2>⭐ Your Final Score</h2>
+
+        <p>XP: <b id="finalXP"></b></p>
+        <p>Coins: <b id="finalCoins"></b></p>
+
+        <button class="restart-btn" onclick="restartGame()">
+            🔄 Play Again
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   FESTIVAL MISSIONS
+========================================================= */
+
+const missions = [
+
+{
+    title: "Mystery Harvest Festival",
+    type: "question",
+    icon: "🌾☀️🐄",
+    clue: "This celebration is connected with harvest, the Sun and cattle. A special rice dish is prepared and the cattle receive attention.",
+    question: "Which festival is described?",
+    options: ["Pongal", "Bihu", "Onam", "Baisakhi"],
+    answer: "Pongal",
+    fact: "Pongal is a major Tamil harvest festival associated with thanksgiving to nature, the Sun and cattle."
+},
+
+{
+    title: "Festival of Lamps",
+    type: "question",
+    icon: "🪔✨🏠",
+    clue: "Homes are decorated with lamps. People celebrate the victory of good over evil and families exchange sweets.",
+    question: "Which festival matches these clues?",
+    options: ["Diwali", "Onam", "Bihu", "Lohri"],
+    answer: "Diwali",
+    fact: "Diwali is widely known as the Festival of Lights and is celebrated across India in different regional traditions."
+},
+
+{
+    title: "Colourful Harvest Clue",
+    type: "question",
+    icon: "🌾🥁💃",
+    clue: "Think of a harvest celebration famous for energetic folk dancing and colourful traditional clothing.",
+    question: "Which festival is strongly associated with this description?",
+    options: ["Baisakhi", "Pongal", "Onam", "Hornbill"],
+    answer: "Baisakhi",
+    fact: "Baisakhi is an important harvest festival in Punjab and is also significant in Sikh history."
+},
+
+{
+    title: "Boat Race Mystery",
+    type: "question",
+    icon: "🚣🌴🌼",
+    clue: "This celebration includes flower decorations, traditional food served on a large banana leaf and famous boat races.",
+    question: "Identify the festival.",
+    options: ["Onam", "Pongal", "Bihu", "Navratri"],
+    answer: "Onam",
+    fact: "Onam is a major festival of Kerala associated with the legendary King Mahabali."
+},
+
+{
+    title: "Seven-Day Culture Challenge",
+    type: "question",
+    icon: "🎭🥁🌺",
+    clue: "This festival is famous for colourful celebrations and traditional dance. In many places, people dance in circles during the festivities.",
+    question: "Which festival fits the clues?",
+    options: ["Navratri", "Lohri", "Pongal", "Baisakhi"],
+    answer: "Navratri",
+    fact: "Navratri is celebrated for nine nights and includes many regional traditions, including Garba and Dandiya in Gujarat."
+},
+
+{
+    title: "Assam Harvest Mystery",
+    type: "question",
+    icon: "🌾🥁🕺",
+    clue: "This festival is connected with the agricultural calendar of Assam and is celebrated with traditional songs and dances.",
+    question: "Which festival is this?",
+    options: ["Bihu", "Onam", "Pongal", "Lohri"],
+    answer: "Bihu",
+    fact: "Bihu is a group of festivals associated with Assam's agricultural cycle."
+},
+
+{
+    title: "Bonfire Night",
+    type: "question",
+    icon: "🔥🥜🌽",
+    clue: "People gather around a bonfire and traditional foods such as sesame, peanuts and other seasonal items may be shared.",
+    question: "Identify the festival.",
+    options: ["Lohri", "Diwali", "Onam", "Holi"],
+    answer: "Lohri",
+    fact: "Lohri is widely celebrated in Punjab and northern India and is associated with winter and the harvest season."
+},
+
+{
+    title: "Colours Everywhere",
+    type: "question",
+    icon: "🎨💦😊",
+    clue: "People celebrate by applying colours to one another. Water and coloured powders are commonly part of the celebration.",
+    question: "Which festival is this?",
+    options: ["Holi", "Navratri", "Diwali", "Onam"],
+    answer: "Holi",
+    fact: "Holi is popularly known as the Festival of Colours and is celebrated in many parts of India."
+},
+
+{
+    title: "Traditional Feast",
+    type: "question",
+    icon: "🍚🥥🍌🌿",
+    clue: "A large traditional vegetarian feast is served on a banana leaf during an important regional celebration.",
+    question: "Which festival is most closely connected with this tradition?",
+    options: ["Onam", "Lohri", "Baisakhi", "Bihu"],
+    answer: "Onam",
+    fact: "The traditional Onam feast is called Sadya and is served on a banana leaf."
+},
+
+{
+    title: "Elephant Festival Clue",
+    type: "question",
+    icon: "🐘🎊🏰",
+    clue: "Think of a famous celebration in Kerala where decorated elephants can be part of temple festivities.",
+    question: "Which festival tradition is described?",
+    options: ["Thrissur Pooram", "Baisakhi", "Lohri", "Bihu"],
+    answer: "Thrissur Pooram",
+    fact: "Thrissur Pooram is a major temple festival in Kerala, famous for processions, decorated elephants and percussion."
+},
+
+{
+    title: "Hornbill Mystery",
+    type: "question",
+    icon: "🪶🎶🏹",
+    clue: "This festival showcases the traditions, music, dance, crafts and cultural heritage of several tribal communities.",
+    question: "Which festival is this?",
+    options: ["Hornbill Festival", "Onam", "Pongal", "Lohri"],
+    answer: "Hornbill Festival",
+    fact: "The Hornbill Festival is held in Nagaland and showcases the cultural traditions of the state's tribes."
+},
+
+{
+    title: "Spring Celebration",
+    type: "question",
+    icon: "🌼🎨🌸",
+    clue: "A spring celebration is known for flowers, colours and joyful cultural activities in several parts of India.",
+    question: "Which festival is commonly associated with colours and spring?",
+    options: ["Holi", "Lohri", "Onam", "Pongal"],
+    answer: "Holi",
+    fact: "Holi is traditionally associated with the arrival of spring and is celebrated with colours."
+},
+
+{
+    title: "Dance Circle",
+    type: "question",
+    icon: "💃🥁⭕",
+    clue: "People form circles and perform energetic folk dances during a nine-night celebration.",
+    question: "Which festival is being described?",
+    options: ["Navratri", "Diwali", "Bihu", "Lohri"],
+    answer: "Navratri",
+    fact: "Garba and Dandiya Raas are especially associated with Navratri celebrations in Gujarat."
+},
+
+{
+    title: "Festival Food Detective",
+    type: "question",
+    icon: "🍯🥛🍚",
+    clue: "A sweet dish made from rice and milk is traditionally prepared during a major celebration in many Indian homes.",
+    question: "Which festival is commonly associated with preparing special sweets and festive foods?",
+    options: ["Pongal", "Holi", "Bihu", "Hornbill Festival"],
+    answer: "Pongal",
+    fact: "Pongal is both the name of the Tamil harvest festival and a traditional rice-based dish prepared for the celebration."
+},
+
+{
+    title: "Cultural Dance Challenge",
+    type: "question",
+    icon: "🕺🥁🌾",
+    clue: "Imagine a harvest celebration with energetic dancing, drums and colourful clothing.",
+    question: "Which festival is most strongly associated with this clue?",
+    options: ["Baisakhi", "Onam", "Diwali", "Holi"],
+    answer: "Baisakhi",
+    fact: "Baisakhi is an important harvest festival of Punjab and is celebrated with music and folk dances."
+},
+
+{
+    title: "Festival Sequence",
+    type: "question",
+    icon: "🪔➡️🍬➡️🎉",
+    clue: "Homes are cleaned and decorated, lamps are lit and sweets are prepared before family celebrations.",
+    question: "Which festival follows this type of celebration?",
+    options: ["Diwali", "Bihu", "Lohri", "Pongal"],
+    answer: "Diwali",
+    fact: "Cleaning and decorating homes, lighting lamps and sharing sweets are common Diwali traditions."
+},
+
+{
+    title: "Cattle Celebration",
+    type: "question",
+    icon: "🐄🌾🎊",
+    clue: "After the main harvest celebration, cattle are honoured, decorated and celebrated as an important part of farming life.",
+    question: "Which festival tradition is this?",
+    options: ["Mattu Pongal", "Lohri", "Onam", "Bihu"],
+    answer: "Mattu Pongal",
+    fact: "Mattu Pongal is the part of the Pongal celebrations dedicated to cattle."
+},
+
+{
+    title: "Grand Culture Clue",
+    type: "question",
+    icon: "🇮🇳🎉🌾🪔",
+    clue: "You have encountered harvest festivals, festivals of lights, colour celebrations and regional cultural festivals.",
+    question: "What makes India's festival tradition special?",
+    options: [
+        "Only one festival is celebrated",
+        "Different regions have diverse traditions",
+        "All festivals follow exactly the same customs",
+        "Festivals have no connection with culture"
+    ],
+    answer: "Different regions have diverse traditions",
+    fact: "India's festivals reflect the country's regional diversity, history, agriculture, religion, food, art and traditions."
+},
+
+{
+    title: "Final Festival Planner",
+    type: "question",
+    icon: "🗺️🇮🇳🎉🏆",
+    clue: "Your final task: think about harvest, nature, history, community, food, music and traditions across India.",
+    question: "What is the best way to understand Indian festivals?",
+    options: [
+        "Only memorize their names",
+        "Study only their dates",
+        "Understand their traditions and cultural meaning",
+        "Ignore regional differences"
+    ],
+    answer: "Understand their traditions and cultural meaning",
+    fact: "Learning the meaning behind festivals helps us understand India's history, culture and regional traditions."
+},
+
+{
+    title: "Festival Master Challenge",
+    type: "question",
+    icon: "👑🎉🇮🇳🏆",
+    clue: "You are now the Festival Planner of Bharat. One final question remains.",
+    question: "Why are festivals important for cultural learning?",
+    options: [
+        "They preserve traditions and connect communities",
+        "They are only holidays",
+        "They are only about food",
+        "They have no historical value"
+    ],
+    answer: "They preserve traditions and connect communities",
+    fact: "Festivals help communities preserve traditions, share cultural knowledge and pass practices from one generation to another."
+}
+
+];
+
+
+/* =========================================================
+   GAME VARIABLES
+========================================================= */
+
+let currentMission = 0;
+let lives = 3;
+let xp = 0;
+let coins = 0;
+let answered = false;
+
+let collected = [];
+
+
+/* =========================================================
+   SHUFFLE
+========================================================= */
+
+function shuffle(array) {
+
+    let arr = [...array];
+
+    for (let i = arr.length - 1; i > 0; i--) {
+
+        let j = Math.floor(Math.random() * (i + 1));
+
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+
+    return arr;
+}
+
+
+/* =========================================================
+   LOAD MISSION
+========================================================= */
+
+function loadMission() {
+
+    if (currentMission >= missions.length) {
+
+        showFinal();
+        return;
+    }
+
+    answered = false;
+
+    const m = missions[currentMission];
+
+    document.getElementById("missionStat").textContent =
+        currentMission + 1;
+
+    document.getElementById("progress").style.width =
+        ((currentMission) / missions.length * 100) + "%";
+
+
+    let options = shuffle(m.options);
+
+
+    let html = `
+
+        <div class="mission">
+
+            <div class="mission-number">
+                🗺️ MISSION ${currentMission + 1} OF ${missions.length}
+            </div>
+
+            <span class="timer">
+                🧠 Think Carefully
+            </span>
+
+            <h2>${m.title}</h2>
+
+            <div class="visual">
+
+                <div class="big-icon">
+                    ${m.icon}
+                </div>
+
+                <div class="clue-card">
+                    🔍 <b>Mystery Clue</b>
+                    <p>${m.clue}</p>
+                </div>
+
+            </div>
+
+            <div class="question">
+                ${m.question}
+            </div>
+
+            <div class="options">
+
+                ${options.map(option => `
+
+                    <div
+                        class="option"
+                        onclick="checkAnswer(this, '${option.replace(/'/g, "\\'")}')"
+                    >
+                        ${option}
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <button
+                class="next-btn"
+                id="nextButton"
+                onclick="nextMission()"
+                style="display:none;"
+            >
+                Next Mission ➜
+            </button>
+
+        </div>
+    `;
+
+    document.getElementById("gameArea").innerHTML = html;
+}
+
+
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
+
+function checkAnswer(element, selected) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const m = missions[currentMission];
+
+    const allOptions = document.querySelectorAll(".option");
+
+    allOptions.forEach(option => {
+        option.style.pointerEvents = "none";
+
+        if (option.textContent.trim() === m.answer) {
+            option.classList.add("correct");
+        }
+    });
+
+
+    const feedback = document.getElementById("feedback");
+
+
+    if (selected === m.answer) {
+
+        element.classList.add("correct");
+
+        xp += 25;
+        coins += 15;
+
+        collected.push(m.answer);
+
+        feedback.className = "feedback correct";
+
+        feedback.innerHTML =
+            "✅ Correct! +25 XP +15 Coins<br><br>" +
+            "📚 <b>Learn:</b> " + m.fact;
+
+        document.getElementById("nextButton").style.display = "inline-block";
+
+    } else {
+
+        element.classList.add("wrong");
+
+        lives--;
+
+        document.getElementById("lives").textContent = lives;
+
+        feedback.className = "feedback wrong";
+
+        feedback.innerHTML =
+            "❌ Not quite!<br><br>" +
+            "💡 Correct Answer: <b>" + m.answer + "</b><br><br>" +
+            "📚 <b>Learn:</b> " + m.fact;
+
+        document.getElementById("nextButton").style.display = "inline-block";
+
+
+        if (lives <= 0) {
+
+            feedback.innerHTML +=
+                "<br><br>💔 You lost all lives. But you can continue learning!";
+
+            lives = 3;
+
+            document.getElementById("lives").textContent = lives;
+        }
+    }
+
+    feedback.style.display = "block";
+
+    document.getElementById("xp").textContent = xp;
+    document.getElementById("coins").textContent = coins;
+
+    updateCollection();
+}
+
+
+/* =========================================================
+   NEXT MISSION
+========================================================= */
+
+function nextMission() {
+
+    currentMission++;
+
+    loadMission();
+}
+
+
+/* =========================================================
+   COLLECTION
+========================================================= */
+
+function updateCollection() {
+
+    const badges = document.getElementById("badges");
+
+    if (collected.length === 0) {
+
+        badges.innerHTML =
+            '<div class="badge">No festival items collected yet</div>';
+
+        return;
+    }
+
+    badges.innerHTML = collected.map((item, index) => {
+
+        return `
+            <div class="badge">
+                🎁 ${index + 1}. ${item}
+            </div>
+        `;
+
+    }).join("");
+}
+
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+function showFinal() {
+
+    document.getElementById("gameArea").innerHTML = "";
+
+    document.querySelector(".intro").style.display = "none";
+
+    document.querySelector(".collection").style.display = "none";
+
+    document.getElementById("finalScreen").style.display = "block";
+
+    document.getElementById("finalXP").textContent = xp;
+
+    document.getElementById("finalCoins").textContent = coins;
+
+    document.getElementById("progress").style.width = "100%";
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartGame() {
+
+    currentMission = 0;
+    lives = 3;
+    xp = 0;
+    coins = 0;
+    collected = [];
+
+    document.getElementById("lives").textContent = lives;
+    document.getElementById("xp").textContent = xp;
+    document.getElementById("coins").textContent = coins;
+
+    document.querySelector(".intro").style.display = "block";
+
+    document.querySelector(".collection").style.display = "block";
+
+    document.getElementById("finalScreen").style.display = "none";
+
+    updateCollection();
+
+    loadMission();
+}
+
+
+/* =========================================================
+   START GAME
+========================================================= */
+
+loadMission();
+
+</script>
+
+</body>
+</html>

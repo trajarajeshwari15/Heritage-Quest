@@ -1,0 +1,3375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Great Kingdoms | Bharat Quest</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, #3730a3, transparent 45%),
+                linear-gradient(135deg, #111827, #312e81, #581c87);
+        }
+
+        header {
+            background: rgba(0,0,0,0.45);
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .role {
+            background: #facc15;
+            color: #422006;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1250px;
+            margin: auto;
+            padding-bottom: 50px;
+        }
+
+        /* INTRO */
+
+        .intro {
+            text-align: center;
+            padding: 35px 10px 20px;
+        }
+
+        .intro h2 {
+            font-size: 38px;
+            margin: 0 0 10px;
+        }
+
+        .intro p {
+            color: #ddd6fe;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(250,204,21,0.15);
+            border: 1px solid #facc15;
+            color: #fde68a;
+            font-weight: bold;
+        }
+
+        /* PLAYER STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 18px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat span {
+            font-size: 15px;
+            color: #ddd6fe;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 6px;
+            color: #fef3c7;
+        }
+
+        /* KINGDOM */
+
+        .kingdom-card {
+            margin-top: 25px;
+            border-radius: 28px;
+            padding: 10px;
+            background: linear-gradient(135deg, #854d0e, #166534);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+        }
+
+        .kingdom {
+            min-height: 470px;
+            border-radius: 22px;
+            overflow: hidden;
+            position: relative;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    #7dd3fc 0%,
+                    #bae6fd 35%,
+                    #86efac 36%,
+                    #4ade80 100%
+                );
+
+            color: #14532d;
+        }
+
+        .kingdom-name {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+
+            background: rgba(255,255,255,0.90);
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 19px;
+            color: #14532d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* SKY */
+
+        .sun {
+            position: absolute;
+            top: 35px;
+            right: 60px;
+            font-size: 65px;
+        }
+
+        .cloud1 {
+            position: absolute;
+            top: 75px;
+            left: 80px;
+            font-size: 50px;
+            opacity: 0.8;
+        }
+
+        .cloud2 {
+            position: absolute;
+            top: 120px;
+            left: 350px;
+            font-size: 42px;
+            opacity: 0.7;
+        }
+
+        /* MOUNTAINS */
+
+        .mountains {
+            position: absolute;
+            bottom: 155px;
+            left: 0;
+            width: 100%;
+            font-size: 90px;
+            letter-spacing: 25px;
+            opacity: 0.8;
+        }
+
+        /* RIVER */
+
+        .river {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 78px;
+
+            background:
+                repeating-linear-gradient(
+                    -20deg,
+                    #38bdf8 0px,
+                    #38bdf8 14px,
+                    #7dd3fc 14px,
+                    #7dd3fc 28px
+                );
+
+            border-top: 4px solid rgba(255,255,255,0.7);
+            z-index: 2;
+        }
+
+        .river::before {
+            content: "〰 〰 〰 〰 〰 〰 〰 〰 〰";
+            position: absolute;
+            top: 8px;
+            left: 15%;
+            color: white;
+            font-size: 22px;
+        }
+
+        /* ROAD */
+
+        .road {
+            position: absolute;
+            bottom: 65px;
+            left: 0;
+            width: 100%;
+            height: 35px;
+
+            background: #a16207;
+            border-top: 4px dashed #fde68a;
+            border-bottom: 4px dashed #fde68a;
+
+            z-index: 5;
+            transform: rotate(-4deg);
+        }
+
+        /* PALACE */
+
+        .palace {
+            position: absolute;
+            left: 43%;
+            bottom: 120px;
+            font-size: 125px;
+            z-index: 12;
+            filter: drop-shadow(0 8px 5px rgba(0,0,0,0.25));
+        }
+
+        .flag {
+            position: absolute;
+            left: 50%;
+            bottom: 245px;
+            font-size: 38px;
+            z-index: 15;
+        }
+
+        /* TREES */
+
+        .tree {
+            position: absolute;
+            bottom: 120px;
+            font-size: 62px;
+            z-index: 10;
+            display: none;
+        }
+
+        .tree1 { left: 7%; }
+        .tree2 { left: 20%; }
+        .tree3 { right: 7%; }
+        .tree4 { right: 20%; }
+        .tree5 { left: 30%; }
+
+        /* HOUSES */
+
+        .house {
+            position: absolute;
+            bottom: 125px;
+            font-size: 65px;
+            z-index: 11;
+            display: none;
+        }
+
+        .house1 { left: 28%; }
+        .house2 { right: 28%; }
+        .house3 { left: 10%; }
+
+        /* FARM */
+
+        .farm {
+            position: absolute;
+            left: 2%;
+            bottom: 105px;
+            font-size: 48px;
+            z-index: 9;
+            display: none;
+        }
+
+        .farm2 {
+            position: absolute;
+            right: 5%;
+            bottom: 105px;
+            font-size: 48px;
+            z-index: 9;
+            display: none;
+        }
+
+        /* FORT */
+
+        .fort {
+            position: absolute;
+            right: 3%;
+            bottom: 125px;
+            font-size: 85px;
+            z-index: 13;
+            display: none;
+        }
+
+        /* MARKET */
+
+        .market {
+            position: absolute;
+            left: 64%;
+            bottom: 175px;
+            font-size: 62px;
+            z-index: 13;
+            display: none;
+        }
+
+        /* LEARNING */
+
+        .learning {
+            position: absolute;
+            left: 27%;
+            bottom: 180px;
+            font-size: 62px;
+            z-index: 13;
+            display: none;
+        }
+
+        /* PEOPLE */
+
+        .people {
+            position: absolute;
+            left: 43%;
+            bottom: 78px;
+            font-size: 27px;
+            z-index: 20;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .animals {
+            position: absolute;
+            right: 28%;
+            bottom: 82px;
+            font-size: 28px;
+            z-index: 20;
+            display: none;
+        }
+
+        /* LEVELS */
+
+        .levels {
+            margin-top: 30px;
+        }
+
+        .levels h2 {
+            margin-bottom: 15px;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .level {
+            background: rgba(255,255,255,0.09);
+            border: 2px solid transparent;
+            border-radius: 18px;
+            padding: 18px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .level:hover:not(.locked) {
+            transform: translateY(-5px);
+            border-color: #facc15;
+        }
+
+        .level.active {
+            border-color: #facc15;
+            background: rgba(250,204,21,0.16);
+        }
+
+        .level.completed {
+            border-color: #22c55e;
+            background: rgba(34,197,94,0.15);
+        }
+
+        .level.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .level .emoji {
+            display: block;
+            font-size: 38px;
+            margin-bottom: 8px;
+        }
+
+        .level small {
+            color: #c4b5fd;
+        }
+
+        /* RESOURCES */
+
+        .resources {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.25);
+        }
+
+        .resources h2 {
+            margin-top: 0;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .resource {
+            text-align: center;
+            padding: 14px 5px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 14px;
+        }
+
+        .resource span {
+            display: block;
+            font-size: 27px;
+        }
+
+        .resource b {
+            display: block;
+            margin-top: 5px;
+            font-size: 19px;
+            color: #fde68a;
+        }
+
+        /* CHALLENGE */
+
+        .challenge {
+            margin-top: 25px;
+            background: rgba(0,0,0,0.30);
+            padding: 27px;
+            border-radius: 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+        }
+
+        .challenge h2 {
+            color: #fde68a;
+            margin-top: 0;
+        }
+
+        .mission {
+            color: #ddd6fe;
+            line-height: 1.6;
+        }
+
+        .progress-info {
+            margin-top: 18px;
+        }
+
+        .progress-bg {
+            height: 14px;
+            width: 100%;
+            margin-top: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #facc15;
+            transition: width 0.3s;
+        }
+
+        .question {
+            margin-top: 25px;
+            font-size: 21px;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+            margin-top: 20px;
+        }
+
+        .option {
+            padding: 17px;
+            border: none;
+            border-radius: 14px;
+            background: #f8fafc;
+            color: #172554;
+            text-align: left;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .option:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: #fef3c7;
+        }
+
+        .option.correct {
+            background: #22c55e;
+            color: white;
+        }
+
+        .option.wrong {
+            background: #ef4444;
+            color: white;
+        }
+
+        .option:disabled {
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 12px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        .next-btn {
+            display: none;
+            margin-top: 18px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 12px;
+            background: #facc15;
+            color: #422006;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        /* BUILD AREA */
+
+        .build-area {
+            margin-top: 25px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 22px;
+            padding: 23px;
+        }
+
+        .build-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .build-btn {
+            border: none;
+            padding: 15px;
+            border-radius: 13px;
+            background: #f8fafc;
+            color: #172554;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .build-btn:hover {
+            background: #fef3c7;
+        }
+
+        .message {
+            text-align: center;
+            min-height: 30px;
+            margin-top: 18px;
+            color: #fde68a;
+            font-weight: bold;
+            font-size: 17px;
+        }
+
+        /* FINAL */
+
+        .final-message {
+            display: none;
+            margin-top: 25px;
+            padding: 30px;
+            text-align: center;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #166534, #854d0e);
+            border: 2px solid #facc15;
+        }
+
+        .final-message h2 {
+            color: #fde68a;
+            font-size: 30px;
+        }
+
+        .final-message p {
+            line-height: 1.7;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 12px;
+            background: #ef4444;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: #dc2626;
+        }
+
+        /* MOBILE */
+
+        @media(max-width: 900px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .level-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .resource-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .palace {
+                left: 37%;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .intro h2 {
+                font-size: 28px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .level-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .build-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .kingdom {
+                min-height: 400px;
+            }
+
+            .palace {
+                font-size: 85px;
+                left: 36%;
+            }
+
+            .tree {
+                font-size: 42px;
+            }
+
+            .house {
+                font-size: 45px;
+            }
+
+            .fort {
+                font-size: 55px;
+            }
+
+            .market,
+            .learning {
+                font-size: 42px;
+            }
+
+            .mountains {
+                font-size: 60px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>👑 Bharat Quest</h1>
+
+    <div class="role">
+        YOU ARE THE KING 👑
+    </div>
+
+</header>
+
+
+<div class="container">
+
+    <!-- INTRO -->
+
+    <section class="intro">
+
+        <h2>🏰 Great Kingdoms</h2>
+
+        <p>
+            Your kingdom starts as a small and underdeveloped land.
+            Use your historical knowledge to earn resources,
+            solve challenges and transform your kingdom into a prosperous state.
+        </p>
+
+        <div class="badge">
+            📚 NCERT History Based Adventure
+        </div>
+
+    </section>
+
+
+    <!-- PLAYER STATS -->
+
+    <section class="stats">
+
+        <div class="stat">
+            <span>❤️ Lives</span>
+            <strong id="lives">5</strong>
+        </div>
+
+        <div class="stat">
+            <span>⭐ XP</span>
+            <strong id="xp">0</strong>
+        </div>
+
+        <div class="stat">
+            <span>🪙 Coins</span>
+            <strong id="coins">0</strong>
+        </div>
+
+        <div class="stat">
+            <span>🏆 Level</span>
+            <strong id="currentLevel">1</strong>
+        </div>
+
+    </section>
+
+
+    <!-- KINGDOM -->
+
+    <section class="kingdom-card">
+
+        <div class="kingdom" id="kingdom">
+
+            <div class="kingdom-name" id="kingdomName">
+                👑 My Ancient Kingdom
+            </div>
+
+            <div class="sun">
+                ☀️
+            </div>
+
+            <div class="cloud1">
+                ☁️
+            </div>
+
+            <div class="cloud2">
+                ☁️
+            </div>
+
+            <div class="mountains">
+                ⛰️ ⛰️ ⛰️
+            </div>
+
+            <!-- RIVER -->
+
+            <div class="river"></div>
+
+            <!-- ROAD -->
+
+            <div class="road"></div>
+
+            <!-- PALACE -->
+
+            <div class="palace">
+                🏰
+            </div>
+
+            <div class="flag">
+                🚩
+            </div>
+
+            <!-- TREES -->
+
+            <div class="tree tree1" id="tree1">
+                🌳
+            </div>
+
+            <div class="tree tree2" id="tree2">
+                🌳
+            </div>
+
+            <div class="tree tree3" id="tree3">
+                🌳
+            </div>
+
+            <div class="tree tree4" id="tree4">
+                🌳
+            </div>
+
+            <div class="tree tree5" id="tree5">
+                🌳
+            </div>
+
+            <!-- HOUSES -->
+
+            <div class="house house1" id="house1">
+                🏠
+            </div>
+
+            <div class="house house2" id="house2">
+                🏠
+            </div>
+
+            <div class="house house3" id="house3">
+                🏡
+            </div>
+
+            <!-- FARMS -->
+
+            <div class="farm" id="farm">
+                🌾🌾🌾
+            </div>
+
+            <div class="farm2" id="farm2">
+                🌾🌾🌾
+            </div>
+
+            <!-- FORT -->
+
+            <div class="fort" id="fort">
+                🛡️
+            </div>
+
+            <!-- MARKET -->
+
+            <div class="market" id="market">
+                🏪
+            </div>
+
+            <!-- LEARNING CENTRE -->
+
+            <div class="learning" id="learning">
+                📚
+            </div>
+
+            <!-- PEOPLE -->
+
+            <div class="people" id="people">
+                👨‍🌾 👩‍🌾 👨‍🏫 👨‍🔧
+            </div>
+
+            <!-- ANIMALS -->
+
+            <div class="animals" id="animals">
+                🐄 🐄
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LEVELS -->
+
+    <section class="levels">
+
+        <h2>🗺️ Kingdom Development</h2>
+
+        <div class="level-grid">
+
+            <div
+                class="level active"
+                id="level1"
+                onclick="selectLevel(1)"
+            >
+
+                <span class="emoji">🌱</span>
+
+                <b>Level 1</b>
+
+                <br>
+
+                Make Kingdom Green
+
+                <br>
+
+                <small>Ancient Settlements</small>
+
+            </div>
+
+
+            <div
+                class="level locked"
+                id="level2"
+                onclick="selectLevel(2)"
+            >
+
+                <span class="emoji">🏠</span>
+
+                <b>Level 2</b>
+
+                <br>
+
+                Homes for People
+
+                <br>
+
+                <small>Mauryan Empire</small>
+
+            </div>
+
+
+            <div
+                class="level locked"
+                id="level3"
+                onclick="selectLevel(3)"
+            >
+
+                <span class="emoji">💧</span>
+
+                <b>Level 3</b>
+
+                <br>
+
+                Water & Agriculture
+
+                <br>
+
+                <small>Chola Kingdom</small>
+
+            </div>
+
+
+            <div
+                class="level locked"
+                id="level4"
+                onclick="selectLevel(4)"
+            >
+
+                <span class="emoji">🛡️</span>
+
+                <b>Level 4</b>
+
+                <br>
+
+                Protect Kingdom
+
+                <br>
+
+                <small>Medieval Kingdoms</small>
+
+            </div>
+
+
+            <div
+                class="level locked"
+                id="level5"
+                onclick="selectLevel(5)"
+            >
+
+                <span class="emoji">🏛️</span>
+
+                <b>Level 5</b>
+
+                <br>
+
+                Prosperous Kingdom
+
+                <br>
+
+                <small>Trade & Society</small>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RESOURCES -->
+
+    <section class="resources">
+
+        <h2>📦 Kingdom Resources</h2>
+
+        <div class="resource-grid">
+
+            <div class="resource">
+                <span>💧</span>
+                Water
+                <b id="water">0</b>
+            </div>
+
+            <div class="resource">
+                <span>🌱</span>
+                Seeds
+                <b id="seeds">0</b>
+            </div>
+
+            <div class="resource">
+                <span>🧱</span>
+                Materials
+                <b id="materials">0</b>
+            </div>
+
+            <div class="resource">
+                <span>👷</span>
+                Workers
+                <b id="workers">0</b>
+            </div>
+
+            <div class="resource">
+                <span>🌾</span>
+                Food
+                <b id="food">0</b>
+            </div>
+
+            <div class="resource">
+                <span>🛡️</span>
+                Defence
+                <b id="defence">0</b>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHALLENGE -->
+
+    <section class="challenge">
+
+        <h2 id="levelTitle">
+            🌱 Level 1 – Make the Kingdom Green
+        </h2>
+
+        <p class="mission" id="mission">
+            Your land is dry. Learn about early settlements
+            and agriculture to earn seeds and water.
+        </p>
+
+
+        <div class="progress-info">
+
+            Question
+            <b id="questionNumber">1</b> / 10
+
+            <div class="progress-bg">
+
+                <div
+                    class="progress-fill"
+                    id="progress"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="question"
+            id="question"
+        >
+            Loading question...
+        </div>
+
+
+        <div
+            class="options"
+            id="options"
+        ></div>
+
+
+        <div
+            class="feedback"
+            id="feedback"
+        ></div>
+
+
+        <button
+            class="next-btn"
+            id="nextBtn"
+            onclick="nextQuestion()"
+        >
+            Next Challenge ➜
+        </button>
+
+    </section>
+
+
+    <!-- BUILD -->
+
+    <section class="build-area">
+
+        <h2>🔨 Develop Your Kingdom</h2>
+
+        <p>
+            Answer historical questions correctly,
+            collect resources and use them to build your kingdom.
+        </p>
+
+
+        <div class="build-grid">
+
+            <button
+                class="build-btn"
+                onclick="buildForest()"
+            >
+                🌳 Plant Forest
+            </button>
+
+
+            <button
+                class="build-btn"
+                onclick="buildHouse()"
+            >
+                🏠 Build House
+            </button>
+
+
+            <button
+                class="build-btn"
+                onclick="buildFarm()"
+            >
+                🌾 Build Farm
+            </button>
+
+
+            <button
+                class="build-btn"
+                onclick="buildFort()"
+            >
+                🛡️ Build Fort
+            </button>
+
+
+            <button
+                class="build-btn"
+                onclick="buildMarket()"
+            >
+                🏪 Build Market
+            </button>
+
+
+            <button
+                class="build-btn"
+                onclick="buildLearning()"
+            >
+                📚 Build Learning Centre
+            </button>
+
+        </div>
+
+
+        <div
+            class="message"
+            id="message"
+        ></div>
+
+    </section>
+
+
+    <!-- FINAL MESSAGE -->
+
+    <section
+        class="final-message"
+        id="finalMessage"
+    >
+
+        <h2>
+            🏆 Your Kingdom is Prosperous!
+        </h2>
+
+        <p>
+            You successfully transformed a small kingdom
+            into a prosperous and well-developed state.
+        </p>
+
+        <p>
+            🌳 Green forests • 🏠 Homes • 🌾 Farms •
+            💧 Water • 🛡️ Defence • 🏪 Markets •
+            📚 Learning • 🐄 Animals • 👨‍🌾 People
+        </p>
+
+        <h3>
+            👑 Congratulations, Great King!
+        </h3>
+
+    </section>
+
+
+    <button
+        class="reset-btn"
+        onclick="resetGame()"
+    >
+        🔄 Restart Kingdom
+    </button>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PLAYER DATA
+===================================================== */
+
+let lives = 5;
+
+let xp = 0;
+
+let coins = 0;
+
+let currentLevel = 1;
+
+let currentQuestion = 0;
+
+
+/* =====================================================
+   RESOURCES
+===================================================== */
+
+let resources = {
+
+    water: 0,
+
+    seeds: 0,
+
+    materials: 0,
+
+    workers: 0,
+
+    food: 0,
+
+    defence: 0
+
+};
+
+
+/* =====================================================
+   BUILDINGS
+===================================================== */
+
+let buildings = {
+
+    forest: 0,
+
+    house: 0,
+
+    farm: 0,
+
+    fort: 0,
+
+    market: 0,
+
+    learning: 0
+
+};
+
+
+/* =====================================================
+   NCERT BASED QUESTIONS
+===================================================== */
+
+const questions = {
+
+
+/* ================= LEVEL 1 ================= */
+
+1: [
+
+    {
+        q: "Which civilisation is famous for well-planned cities such as Harappa and Mohenjo-daro?",
+
+        a: [
+            "Mauryan Civilisation",
+            "Harappan Civilisation",
+            "Gupta Civilisation",
+            "Chola Civilisation"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        q: "Why were many early cities built near rivers?",
+
+        a: [
+            "For entertainment",
+            "For water and fertile land",
+            "For mountains",
+            "For hunting only"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        q: "Which river system is closely associated with the Harappan civilisation?",
+
+        a: [
+            "Indus river system",
+            "Narmada only",
+            "Kaveri only",
+            "Godavari only"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was an important occupation of people living in early farming settlements?",
+
+        a: [
+            "Agriculture",
+            "Aircraft building",
+            "Modern banking",
+            "Printing"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "The Harappan cities are known for which important feature?",
+
+        a: [
+            "Planned drainage",
+            "Railways",
+            "Modern factories",
+            "Airports"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why was agriculture important for early settlements?",
+
+        a: [
+            "It provided food",
+            "It provided computers",
+            "It created airplanes",
+            "It produced electricity"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which material was commonly used for making tools in the early period?",
+
+        a: [
+            "Stone",
+            "Plastic",
+            "Aluminium foil",
+            "Computer chips"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why did people begin settling in one place instead of constantly moving?",
+
+        a: [
+            "Development of agriculture",
+            "Invention of television",
+            "Modern transport",
+            "Internet"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which resource is most directly needed to grow crops?",
+
+        a: [
+            "Water",
+            "Gold",
+            "Stone statues",
+            "Silk"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which feature of Harappan cities shows organised planning?",
+
+        a: [
+            "Drainage and streets",
+            "Airports",
+            "Railway stations",
+            "Modern highways"
+        ],
+
+        correct: 0
+    }
+
+],
+
+
+/* ================= LEVEL 2 ================= */
+
+2: [
+
+    {
+        q: "Who founded the Mauryan Empire?",
+
+        a: [
+            "Ashoka",
+            "Chandragupta Maurya",
+            "Samudragupta",
+            "Rajaraja Chola"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        q: "Who was the adviser of Chandragupta Maurya traditionally associated with the Arthashastra?",
+
+        a: [
+            "Kalidasa",
+            "Chanakya",
+            "Tulsidas",
+            "Banabhatta"
+        ],
+
+        correct: 1
+    },
+
+
+    {
+        q: "Which ruler fought the Kalinga war and later promoted Dhamma?",
+
+        a: [
+            "Ashoka",
+            "Chandragupta II",
+            "Harsha",
+            "Rajaraja"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was the capital of the Mauryan Empire?",
+
+        a: [
+            "Pataliputra",
+            "Madurai",
+            "Delhi",
+            "Thanjavur"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Ashoka's messages were engraved mainly on what?",
+
+        a: [
+            "Pillars and rocks",
+            "Paper newspapers",
+            "Plastic boards",
+            "Digital screens"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What did Ashoka promote after the Kalinga war?",
+
+        a: [
+            "Dhamma",
+            "Constant warfare",
+            "Sea piracy",
+            "Industrialisation"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "The Mauryan Empire had officials who helped administer the empire. What does this show?",
+
+        a: [
+            "Organised administration",
+            "No government",
+            "Only village festivals",
+            "Modern democracy"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which source gives information about Mauryan administration?",
+
+        a: [
+            "Arthashastra",
+            "Modern newspaper",
+            "Internet blog",
+            "Railway timetable"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why were roads important to ancient empires?",
+
+        a: [
+            "Movement of people, goods and armies",
+            "For television",
+            "For computers",
+            "For cinema"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What helped rulers maintain large empires?",
+
+        a: [
+            "Administration and communication",
+            "Only festivals",
+            "Only temples",
+            "Only hunting"
+        ],
+
+        correct: 0
+    }
+
+],
+
+
+/* ================= LEVEL 3 ================= */
+
+3: [
+
+    {
+        q: "Which dynasty is especially known for developing irrigation in the Kaveri delta?",
+
+        a: [
+            "Cholas",
+            "Mughals",
+            "Mauryas",
+            "Kushanas"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Who built the famous Brihadisvara Temple at Thanjavur?",
+
+        a: [
+            "Rajaraja Chola I",
+            "Ashoka",
+            "Akbar",
+            "Chandragupta Maurya"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Who was Rajaraja Chola's son and successor known for overseas expeditions?",
+
+        a: [
+            "Rajendra Chola I",
+            "Harsha",
+            "Ashoka",
+            "Babur"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why was irrigation important in the Chola period?",
+
+        a: [
+            "It supported agriculture",
+            "It supported cinema",
+            "It produced computers",
+            "It built railways"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which river delta became an important agricultural region under the Cholas?",
+
+        a: [
+            "Kaveri",
+            "Ganga only",
+            "Yamuna only",
+            "Indus only"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What were local village assemblies associated with in Chola administration?",
+
+        a: [
+            "Local self-government",
+            "Modern parliament",
+            "Air force",
+            "Railways"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why did rulers construct tanks and canals?",
+
+        a: [
+            "To manage water for agriculture",
+            "To build roads",
+            "To make weapons",
+            "To create newspapers"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was an important economic activity in South Indian kingdoms?",
+
+        a: [
+            "Agriculture and trade",
+            "Space travel",
+            "Computer programming",
+            "Car manufacturing"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why were ports important to South Indian kingdoms?",
+
+        a: [
+            "They supported overseas trade",
+            "They produced crops",
+            "They were schools only",
+            "They were forts only"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which Chola ruler is associated with expansion through military campaigns?",
+
+        a: [
+            "Rajendra Chola I",
+            "Ashoka",
+            "Akbar",
+            "Iltutmish"
+        ],
+
+        correct: 0
+    }
+
+],
+
+
+/* ================= LEVEL 4 ================= */
+
+4: [
+
+    {
+        q: "Which Mughal ruler introduced important administrative reforms and organised nobles into a ranking system?",
+
+        a: [
+            "Akbar",
+            "Babur",
+            "Humayun",
+            "Aurangzeb"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was the mansabdari system?",
+
+        a: [
+            "A ranking system for officials",
+            "A farming method",
+            "A temple ritual",
+            "A type of ship"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which empire had its capital at Vijayanagara?",
+
+        a: [
+            "Vijayanagara Empire",
+            "Mauryan Empire",
+            "Gupta Empire",
+            "Harappan civilisation"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why were forts important to medieval rulers?",
+
+        a: [
+            "Defence",
+            "Agriculture",
+            "Education only",
+            "Trade only"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which ruler is associated with the foundation of the Mughal Empire in India?",
+
+        a: [
+            "Babur",
+            "Akbar",
+            "Shah Jahan",
+            "Aurangzeb"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was an important feature of medieval kingdoms?",
+
+        a: [
+            "Land revenue and administration",
+            "Internet",
+            "Factories",
+            "Modern banking"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why did rulers maintain armies?",
+
+        a: [
+            "To protect and expand territories",
+            "To grow crops",
+            "To teach students",
+            "To make pottery"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why were markets important in medieval towns?",
+
+        a: [
+            "Exchange of goods",
+            "Only for worship",
+            "Only for defence",
+            "Only for farming"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What helped large kingdoms control distant territories?",
+
+        a: [
+            "Officials, armies and communication",
+            "Only festivals",
+            "Only temples",
+            "Only farmers"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What was one major function of a fort?",
+
+        a: [
+            "Protection during attacks",
+            "Growing rice",
+            "Teaching mathematics",
+            "Producing silk"
+        ],
+
+        correct: 0
+    }
+
+],
+
+
+/* ================= LEVEL 5 ================= */
+
+5: [
+
+    {
+        q: "Why were markets important for the growth of kingdoms?",
+
+        a: [
+            "They encouraged trade",
+            "They stopped farming",
+            "They removed roads",
+            "They prevented exchange"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why did rulers support irrigation systems?",
+
+        a: [
+            "To improve agricultural production",
+            "To stop agriculture",
+            "To destroy villages",
+            "To prevent trade"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why were temples and other major buildings important historical sources?",
+
+        a: [
+            "They provide evidence about society and culture",
+            "They were computers",
+            "They were modern offices",
+            "They were factories"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What can inscriptions tell historians?",
+
+        a: [
+            "Information about rulers and society",
+            "Weather forecasts",
+            "Modern traffic",
+            "Computer data"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why was education important in historical societies?",
+
+        a: [
+            "It helped preserve and spread knowledge",
+            "It stopped learning",
+            "It prevented administration",
+            "It ended trade"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Which activity could make a historical kingdom economically stronger?",
+
+        a: [
+            "Agriculture and trade",
+            "Destroying crops",
+            "Closing markets",
+            "Wasting water"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why did rulers build roads?",
+
+        a: [
+            "To connect settlements and support movement",
+            "To stop trade",
+            "To prevent farming",
+            "To isolate cities"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "What combination is most important for a prosperous kingdom?",
+
+        a: [
+            "Food, water, trade, security and administration",
+            "Only palaces",
+            "Only armies",
+            "Only festivals"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "Why should a ruler protect forests and water resources?",
+
+        a: [
+            "They support long-term life and agriculture",
+            "They have no value",
+            "They stop development",
+            "They prevent people from living"
+        ],
+
+        correct: 0
+    },
+
+
+    {
+        q: "A kingdom has food but no safe roads or markets. What should the king improve?",
+
+        a: [
+            "Transport and trade",
+            "Destroy the farms",
+            "Stop irrigation",
+            "Close the kingdom"
+        ],
+
+        correct: 0
+    }
+
+]
+
+};
+
+
+/* =====================================================
+   LEVEL INFORMATION
+===================================================== */
+
+const levelInfo = {
+
+    1: {
+        title: "🌱 Level 1 – Make the Kingdom Green",
+        mission:
+            "Your land is dry. Learn about early settlements and agriculture to earn seeds and water."
+    },
+
+    2: {
+        title: "🏠 Level 2 – Homes for People",
+        mission:
+            "Your population is growing. Learn about Mauryan administration and earn materials and workers."
+    },
+
+    3: {
+        title: "💧 Level 3 – Water & Agriculture",
+        mission:
+            "Your kingdom needs reliable agriculture. Learn about Chola irrigation and earn water and food."
+    },
+
+    4: {
+        title: "🛡️ Level 4 – Protect the Kingdom",
+        mission:
+            "Enemies are approaching. Learn about medieval administration, forts and armies."
+    },
+
+    5: {
+        title: "🏛️ Level 5 – Prosperous Kingdom",
+        mission:
+            "Build a complete prosperous kingdom using knowledge of trade, education, agriculture and administration."
+    }
+
+};
+
+
+/* =====================================================
+   LOAD QUESTION
+===================================================== */
+
+function loadQuestion() {
+
+    let qList = questions[currentLevel];
+
+    if (currentQuestion >= qList.length) {
+
+        completeLevel();
+
+        return;
+    }
+
+    let q = qList[currentQuestion];
+
+    document.getElementById("questionNumber").innerText =
+        currentQuestion + 1;
+
+    document.getElementById("progress").style.width =
+        ((currentQuestion) / qList.length * 100) + "%";
+
+    document.getElementById("question").innerText =
+        q.q;
+
+
+    let options =
+        document.getElementById("options");
+
+    options.innerHTML = "";
+
+
+    /*
+       IMPORTANT:
+       RANDOMISE ANSWERS
+    */
+
+    let answerList = q.a.map(
+        function(answer, index) {
+
+            return {
+                text: answer,
+                originalIndex: index
+            };
+
+        }
+    );
+
+
+    answerList.sort(
+        function() {
+            return Math.random() - 0.5;
+        }
+    );
+
+
+    answerList.forEach(
+        function(answer, index) {
+
+            let button =
+                document.createElement("button");
+
+            button.className = "option";
+
+            button.innerText =
+                String.fromCharCode(65 + index)
+                + ". "
+                + answer.text;
+
+
+            button.onclick =
+                function() {
+
+                    checkAnswer(
+                        answer.originalIndex,
+                        button
+                    );
+
+                };
+
+
+            options.appendChild(button);
+
+        }
+    );
+
+
+    document.getElementById("feedback")
+        .style.display = "none";
+
+
+    document.getElementById("nextBtn")
+        .style.display = "none";
+
+}
+
+
+/* =====================================================
+   CHECK ANSWER
+===================================================== */
+
+function checkAnswer(
+    selected,
+    clickedButton
+) {
+
+    let q =
+        questions[currentLevel][currentQuestion];
+
+
+    let buttons =
+        document.querySelectorAll(".option");
+
+
+    buttons.forEach(
+        function(button) {
+
+            button.disabled = true;
+
+        }
+    );
+
+
+    if (selected === q.correct) {
+
+        clickedButton.classList.add("correct");
+
+        xp += 20;
+
+        coins += 10;
+
+        giveResources();
+
+
+        showFeedback(
+            "✅ Correct! Excellent, King! You earned valuable kingdom resources.",
+            true
+        );
+
+    }
+
+    else {
+
+        clickedButton.classList.add("wrong");
+
+
+        /*
+           Find correct answer
+        */
+
+        buttons.forEach(
+            function(button) {
+
+                let answerText =
+                    button.innerText.substring(3);
+
+
+                if (
+                    answerText ===
+                    q.a[q.correct]
+                ) {
+
+                    button.classList.add("correct");
+
+                }
+
+            }
+        );
+
+
+        lives--;
+
+
+        showFeedback(
+            "❌ Wrong answer! You lost one life. Learn from the challenge and continue.",
+            false
+        );
+
+
+        if (lives <= 0) {
+
+            setTimeout(
+                function() {
+
+                    alert(
+                        "💀 Your kingdom has fallen!\n\n" +
+                        "You need more historical knowledge to rule the kingdom."
+                    );
+
+                    resetGame();
+
+                },
+                900
+            );
+
+            return;
+        }
+
+    }
+
+
+    updateStats();
+
+
+    document.getElementById("nextBtn")
+        .style.display = "inline-block";
+
+}
+
+
+/* =====================================================
+   GIVE RESOURCES
+===================================================== */
+
+function giveResources() {
+
+    if (currentLevel === 1) {
+
+        resources.water += 2;
+
+        resources.seeds += 3;
+
+        resources.workers += 1;
+
+    }
+
+    else if (currentLevel === 2) {
+
+        resources.materials += 3;
+
+        resources.workers += 2;
+
+    }
+
+    else if (currentLevel === 3) {
+
+        resources.water += 3;
+
+        resources.food += 3;
+
+        resources.seeds += 2;
+
+    }
+
+    else if (currentLevel === 4) {
+
+        resources.defence += 3;
+
+        resources.materials += 2;
+
+    }
+
+    else if (currentLevel === 5) {
+
+        resources.water += 2;
+
+        resources.food += 2;
+
+        resources.materials += 2;
+
+        resources.workers += 1;
+
+    }
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   NEXT QUESTION
+===================================================== */
+
+function nextQuestion() {
+
+    currentQuestion++;
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   COMPLETE LEVEL
+===================================================== */
+
+function completeLevel() {
+
+    document.getElementById("progress")
+        .style.width = "100%";
+
+
+    /*
+       Automatically develop kingdom
+    */
+
+    developKingdomForLevel(
+        currentLevel
+    );
+
+
+    /*
+       Mark current level completed
+    */
+
+    document.getElementById(
+        "level" + currentLevel
+    ).classList.add("completed");
+
+
+    if (currentLevel < 5) {
+
+        alert(
+            "🎉 LEVEL " +
+            currentLevel +
+            " COMPLETED!\n\n" +
+            "Your kingdom has developed!"
+        );
+
+
+        currentLevel++;
+
+        currentQuestion = 0;
+
+
+        unlockLevel(
+            currentLevel
+        );
+
+
+        updateLevelInfo();
+
+
+        loadQuestion();
+
+    }
+
+    else {
+
+        showFinalKingdom();
+
+
+        document.getElementById(
+            "finalMessage"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🏆 YOUR KINGDOM IS NOW PROSPEROUS!";
+
+
+        alert(
+            "🏆 CONGRATULATIONS, KING!\n\n" +
+            "You successfully transformed your kingdom into a prosperous state!"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   KINGDOM DEVELOPMENT
+===================================================== */
+
+function developKingdomForLevel(level) {
+
+
+    /* LEVEL 1
+       GREEN KINGDOM
+    */
+
+    if (level === 1) {
+
+        showElement("tree1");
+
+        showElement("tree2");
+
+        showElement("tree3");
+
+        showElement("tree4");
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🌳 Level 1 completed! Your dry land is becoming green.";
+
+    }
+
+
+    /* LEVEL 2
+       HOMES
+    */
+
+    else if (level === 2) {
+
+        showElement("house1");
+
+        showElement("house2");
+
+        showElement("house3");
+
+        showElement("people");
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🏠 Level 2 completed! Houses have been built for your people.";
+
+    }
+
+
+    /* LEVEL 3
+       AGRICULTURE
+    */
+
+    else if (level === 3) {
+
+        showElement("farm");
+
+        showElement("farm2");
+
+        showElement("animals");
+
+        showElement("tree5");
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🌾 Level 3 completed! Farms and irrigation have improved food production.";
+
+    }
+
+
+    /* LEVEL 4
+       DEFENCE
+    */
+
+    else if (level === 4) {
+
+        showElement("fort");
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🛡️ Level 4 completed! Your kingdom is now protected.";
+
+    }
+
+
+    /* LEVEL 5
+       PROSPEROUS KINGDOM
+    */
+
+    else if (level === 5) {
+
+        showElement("market");
+
+        showElement("learning");
+
+        showElement("people");
+
+        showElement("animals");
+
+        showElement("tree1");
+
+        showElement("tree2");
+
+        showElement("tree3");
+
+        showElement("tree4");
+
+        showElement("tree5");
+
+        showElement("house1");
+
+        showElement("house2");
+
+        showElement("house3");
+
+        showElement("farm");
+
+        showElement("farm2");
+
+        showElement("fort");
+
+
+        document.getElementById(
+            "message"
+        ).innerText =
+            "🏛️ Level 5 completed! Your kingdom has become a prosperous civilisation.";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW ELEMENT
+===================================================== */
+
+function showElement(id) {
+
+    let element =
+        document.getElementById(id);
+
+    if (element) {
+
+        element.style.display = "block";
+
+    }
+
+}
+
+
+/* =====================================================
+   FINAL KINGDOM
+===================================================== */
+
+function showFinalKingdom() {
+
+    /*
+       Show everything
+    */
+
+    let finalElements = [
+
+        "tree1",
+        "tree2",
+        "tree3",
+        "tree4",
+        "tree5",
+
+        "house1",
+        "house2",
+        "house3",
+
+        "farm",
+        "farm2",
+
+        "fort",
+
+        "market",
+
+        "learning",
+
+        "people",
+
+        "animals"
+
+    ];
+
+
+    finalElements.forEach(
+        function(id) {
+
+            showElement(id);
+
+        }
+    );
+
+
+    document.getElementById(
+        "kingdomName"
+    ).innerText =
+        "👑 Prosperous Bharat Kingdom";
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🌳🏠🌾💧🛡️🏪📚 Your kingdom is complete!";
+}
+
+
+/* =====================================================
+   UNLOCK LEVEL
+===================================================== */
+
+function unlockLevel(level) {
+
+    let element =
+        document.getElementById(
+            "level" + level
+        );
+
+
+    element.classList.remove("locked");
+
+    element.classList.add("active");
+
+}
+
+
+/* =====================================================
+   SELECT LEVEL
+===================================================== */
+
+function selectLevel(level) {
+
+    let element =
+        document.getElementById(
+            "level" + level
+        );
+
+
+    if (
+        element.classList.contains("locked")
+    ) {
+
+        alert(
+            "🔒 This level is locked!\n\n" +
+            "Complete the previous level first."
+        );
+
+        return;
+
+    }
+
+
+    currentLevel = level;
+
+    currentQuestion = 0;
+
+
+    document.querySelectorAll(".level")
+        .forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    element.classList.add("active");
+
+
+    updateLevelInfo();
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   UPDATE LEVEL INFO
+===================================================== */
+
+function updateLevelInfo() {
+
+    document.getElementById(
+        "levelTitle"
+    ).innerText =
+        levelInfo[currentLevel].title;
+
+
+    document.getElementById(
+        "mission"
+    ).innerText =
+        levelInfo[currentLevel].mission;
+
+
+    document.getElementById(
+        "currentLevel"
+    ).innerText =
+        currentLevel;
+
+}
+
+
+/* =====================================================
+   FEEDBACK
+===================================================== */
+
+function showFeedback(
+    text,
+    correct
+) {
+
+    let box =
+        document.getElementById(
+            "feedback"
+        );
+
+
+    box.innerText = text;
+
+    box.style.display = "block";
+
+
+    if (correct) {
+
+        box.style.background =
+            "#166534";
+
+    }
+
+    else {
+
+        box.style.background =
+            "#991b1b";
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE STATS
+===================================================== */
+
+function updateStats() {
+
+    document.getElementById(
+        "lives"
+    ).innerText = lives;
+
+
+    document.getElementById(
+        "xp"
+    ).innerText = xp;
+
+
+    document.getElementById(
+        "coins"
+    ).innerText = coins;
+
+
+    document.getElementById(
+        "currentLevel"
+    ).innerText = currentLevel;
+
+}
+
+
+/* =====================================================
+   UPDATE RESOURCES
+===================================================== */
+
+function updateResources() {
+
+    document.getElementById(
+        "water"
+    ).innerText =
+        resources.water;
+
+
+    document.getElementById(
+        "seeds"
+    ).innerText =
+        resources.seeds;
+
+
+    document.getElementById(
+        "materials"
+    ).innerText =
+        resources.materials;
+
+
+    document.getElementById(
+        "workers"
+    ).innerText =
+        resources.workers;
+
+
+    document.getElementById(
+        "food"
+    ).innerText =
+        resources.food;
+
+
+    document.getElementById(
+        "defence"
+    ).innerText =
+        resources.defence;
+
+}
+
+
+/* =====================================================
+   BUILD FOREST
+===================================================== */
+
+function buildForest() {
+
+    if (
+        resources.seeds < 3 ||
+        resources.water < 2 ||
+        resources.workers < 1
+    ) {
+
+        alert(
+            "❌ Not enough resources!\n\n" +
+            "Need:\n" +
+            "🌱 3 Seeds\n" +
+            "💧 2 Water\n" +
+            "👷 1 Worker"
+        );
+
+        return;
+
+    }
+
+
+    resources.seeds -= 3;
+
+    resources.water -= 2;
+
+    resources.workers -= 1;
+
+
+    buildings.forest++;
+
+
+    let treeNumber =
+        buildings.forest;
+
+
+    if (
+        treeNumber >= 1 &&
+        treeNumber <= 5
+    ) {
+
+        showElement(
+            "tree" + treeNumber
+        );
+
+    }
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🌳 Forest planted! Your kingdom is greener.";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   BUILD HOUSE
+===================================================== */
+
+function buildHouse() {
+
+    if (
+        resources.materials < 4 ||
+        resources.workers < 2
+    ) {
+
+        alert(
+            "❌ Need:\n" +
+            "🧱 4 Materials\n" +
+            "👷 2 Workers"
+        );
+
+        return;
+
+    }
+
+
+    resources.materials -= 4;
+
+    resources.workers -= 2;
+
+
+    buildings.house++;
+
+
+    if (
+        buildings.house === 1
+    ) {
+
+        showElement("house1");
+
+    }
+
+    else if (
+        buildings.house === 2
+    ) {
+
+        showElement("house2");
+
+    }
+
+    else if (
+        buildings.house === 3
+    ) {
+
+        showElement("house3");
+
+    }
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🏠 New home built for your people!";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   BUILD FARM
+===================================================== */
+
+function buildFarm() {
+
+    if (
+        resources.seeds < 3 ||
+        resources.water < 3 ||
+        resources.workers < 2
+    ) {
+
+        alert(
+            "❌ Need:\n" +
+            "🌱 3 Seeds\n" +
+            "💧 3 Water\n" +
+            "👷 2 Workers"
+        );
+
+        return;
+
+    }
+
+
+    resources.seeds -= 3;
+
+    resources.water -= 3;
+
+    resources.workers -= 2;
+
+
+    resources.food += 5;
+
+
+    buildings.farm++;
+
+
+    if (
+        buildings.farm === 1
+    ) {
+
+        showElement("farm");
+
+    }
+
+    else {
+
+        showElement("farm2");
+
+    }
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🌾 Farm developed! Food production increased.";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   BUILD FORT
+===================================================== */
+
+function buildFort() {
+
+    if (
+        resources.materials < 5 ||
+        resources.defence < 4 ||
+        resources.workers < 2
+    ) {
+
+        alert(
+            "❌ Need:\n" +
+            "🧱 5 Materials\n" +
+            "🛡️ 4 Defence\n" +
+            "👷 2 Workers"
+        );
+
+        return;
+
+    }
+
+
+    resources.materials -= 5;
+
+    resources.defence -= 4;
+
+    resources.workers -= 2;
+
+
+    buildings.fort++;
+
+
+    showElement("fort");
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🛡️ Fort built! Your kingdom is safer.";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   BUILD MARKET
+===================================================== */
+
+function buildMarket() {
+
+    if (
+        resources.materials < 5 ||
+        resources.food < 3 ||
+        resources.workers < 2
+    ) {
+
+        alert(
+            "❌ Need:\n" +
+            "🧱 5 Materials\n" +
+            "🌾 3 Food\n" +
+            "👷 2 Workers"
+        );
+
+        return;
+
+    }
+
+
+    resources.materials -= 5;
+
+    resources.food -= 3;
+
+    resources.workers -= 2;
+
+
+    buildings.market++;
+
+
+    showElement("market");
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "🏪 Market opened! Trade is growing.";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   BUILD LEARNING CENTRE
+===================================================== */
+
+function buildLearning() {
+
+    if (
+        resources.materials < 5 ||
+        resources.food < 2 ||
+        resources.workers < 2
+    ) {
+
+        alert(
+            "❌ Need:\n" +
+            "🧱 5 Materials\n" +
+            "🌾 2 Food\n" +
+            "👷 2 Workers"
+        );
+
+        return;
+
+    }
+
+
+    resources.materials -= 5;
+
+    resources.food -= 2;
+
+    resources.workers -= 2;
+
+
+    buildings.learning++;
+
+
+    showElement("learning");
+
+
+    document.getElementById(
+        "message"
+    ).innerText =
+        "📚 Learning Centre built! Knowledge is growing.";
+
+
+    updateResources();
+
+}
+
+
+/* =====================================================
+   RESET GAME
+===================================================== */
+
+function resetGame() {
+
+    lives = 5;
+
+    xp = 0;
+
+    coins = 0;
+
+    currentLevel = 1;
+
+    currentQuestion = 0;
+
+
+    resources = {
+
+        water: 0,
+
+        seeds: 0,
+
+        materials: 0,
+
+        workers: 0,
+
+        food: 0,
+
+        defence: 0
+
+    };
+
+
+    buildings = {
+
+        forest: 0,
+
+        house: 0,
+
+        farm: 0,
+
+        fort: 0,
+
+        market: 0,
+
+        learning: 0
+
+    };
+
+
+    /*
+       Hide all development objects
+    */
+
+    document.querySelectorAll(
+        ".tree, .house, .farm, .farm2, .fort, .market, .learning, .people, .animals"
+    )
+    .forEach(
+        function(element) {
+
+            element.style.display =
+                "none";
+
+        }
+    );
+
+
+    /*
+       Reset levels
+    */
+
+    document.querySelectorAll(
+        ".level"
+    )
+    .forEach(
+        function(element, index) {
+
+            element.classList.remove(
+                "active"
+            );
+
+            element.classList.remove(
+                "completed"
+            );
+
+
+            if (index === 0) {
+
+                element.classList.add(
+                    "active"
+                );
+
+            }
+
+            else {
+
+                element.classList.add(
+                    "locked"
+                );
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "finalMessage"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "kingdomName"
+    ).innerText =
+        "👑 My Ancient Kingdom";
+
+
+    document.getElementById(
+        "message"
+    ).innerText = "";
+
+
+    updateStats();
+
+    updateResources();
+
+    updateLevelInfo();
+
+    loadQuestion();
+
+}
+
+
+/* =====================================================
+   START GAME
+===================================================== */
+
+updateStats();
+
+updateResources();
+
+updateLevelInfo();
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
